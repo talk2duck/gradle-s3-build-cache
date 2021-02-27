@@ -1,0 +1,72 @@
+buildscript {
+    apply from: rootProject.file('versions.gradle')
+
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+
+//  dependencies {
+//    classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
+//  }
+}
+
+plugins {
+    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+    id 'java-gradle-plugin'
+    id 'maven-publish'
+    id 'com.gradle.plugin-publish' version "${gradlePublishPluginVersion}"
+}
+
+group 'com.talk2duck'
+version '0.1.0'
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        allWarningsAsErrors = true
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        allWarningsAsErrors = true
+    }
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation awsS3
+
+    testImplementation testing
+}
+
+test {
+    useJUnitPlatform()
+}
+
+gradlePlugin {
+    plugins {
+        s3BuildCache {
+            id = 'com.talk2duck.gradle-s3-build-cache'
+            implementationClass = 'com.talk2duck.gradle.cache.s3.S3BuildCachePlugin'
+            displayName = 'S3 Gradle Build Cache Plugin'
+            description = 'Gradle build cache plugin that uses AWS S3 to store build artifacts'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'https://github.com/talk2duck/gradle-s3-build-cache'
+    vcsUrl = 'https://github.com/talk2duck/gradle-s3-build-cache'
+    tags = ['build-cache', 'cache', 's3']
+}

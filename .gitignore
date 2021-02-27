@@ -1,0 +1,14 @@
+# Gradle
+.gradle
+!gradle/wrapper/gradle-wrapper.jar
+
+# Build output directies
+build/
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
+/*/out/
