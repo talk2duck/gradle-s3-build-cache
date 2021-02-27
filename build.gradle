@@ -7,21 +7,20 @@ buildscript {
             url "https://plugins.gradle.org/m2/"
         }
     }
-
-//  dependencies {
-//    classpath 'com.github.jengelman.gradle.plugins:shadow:5.1.0'
-//  }
 }
 
 plugins {
     id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'com.gradle.plugin-publish' version "${gradlePublishPluginVersion}"
+    id 'com.github.johnrengelman.shadow' version "$shadowjarVersion"
+    id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
 }
 
+import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 group 'com.talk2duck'
-version '0.1.0'
+version '0.1.2'
 
 compileKotlin {
     kotlinOptions {
@@ -45,9 +44,26 @@ repositories {
 }
 
 dependencies {
-    implementation awsS3
-
+    compileOnly awsS3
     testImplementation testing
+}
+
+configurations.compile.dependencies.remove dependencies.gradleApi()
+
+task relocateShadowJar(type: ConfigureShadowRelocation) {
+    target = tasks.shadowJar
+    prefix = "com.talk2duck.gradle.cache.shadow"
+}
+
+tasks.shadowJar.dependsOn tasks.relocateShadowJar
+
+shadowJar{
+    configurations = [project.configurations.compileOnly]
+    archiveClassifier.set('')
+    mergeServiceFiles()
+    exclude 'META-INF/versions/'
+    exclude 'META-INF/maven/'
+    exclude 'META-INF/*.kotlin_module'
 }
 
 test {

@@ -3,7 +3,7 @@ ext {
     gradlePublishPluginVersion = "0.13.0"
     junitVersion = "5.7.0"
     awsVersion = "1.11.872"
-    shadowjarVersion = "5.0.0"
+    shadowjarVersion = "6.1.0"
 
     kotlin = [
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
