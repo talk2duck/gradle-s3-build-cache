@@ -44,6 +44,8 @@ repositories {
 }
 
 dependencies {
+    shadow localGroovy()
+    shadow gradleApi()
     compileOnly awsS3
     testImplementation testing
 }
@@ -56,6 +58,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 }
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
+
 
 shadowJar{
     configurations = [project.configurations.compileOnly]
