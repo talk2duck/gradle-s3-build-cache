@@ -105,4 +105,4 @@ This project uses explicit versioning *Release.Breaking.Feature.Fix* as describe
 
 # License
 
-[LICENSE](./LICENSE)
+[Apache License 2.0](./LICENSE)
