@@ -1,5 +1,6 @@
 package com.talk2duck.gradle.cache.s3
 
+import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
@@ -17,49 +18,35 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 
-fun createS3Key(prefix: String?, buildCacheHashCode: String): String {
-    if (prefix == null || prefix.isEmpty()) {
-        return buildCacheHashCode
-    }
-    val sb = StringBuilder()
-    sb.append(prefix)
-    if (!prefix.endsWith("/")) {
-        sb.append("/")
-    }
-    sb.append(buildCacheHashCode)
-    return sb.toString()
-}
-
 open class S3BuildCacheService(
-    private val amazonS3: AmazonS3? = null,
-    private val bucketName: String? = null,
-    private val prefix: String? = null,
-    private val reducedRedundancyStorage: Boolean = false
+    private val amazonS3: AmazonS3,
+    private val bucketName: String,
+    private val prefix: String,
+    private val reducedRedundancyStorage: Boolean
 ) : BuildCacheService {
-    @kotlin.jvm.Throws(BuildCacheException::class)
     override fun load(buildCacheKey: BuildCacheKey, buildCacheEntryReader: BuildCacheEntryReader): Boolean {
         val key: String = createS3Key(prefix, buildCacheKey.hashCode)
-        if (!amazonS3!!.doesObjectExist(bucketName, key)) {
-//            S3BuildCacheService.log.info("Build cache not found. key='{}'", key)
-            return false
-        }
         try {
-            amazonS3.getObject(bucketName, key).use { `object` ->
-                `object`.objectContent.use { `is` ->
-                    buildCacheEntryReader.readFrom(`is`)
-//                    S3BuildCacheService.log.info("Build cache found. key='{}'", key)
+            amazonS3.getObject(bucketName, key).use { s3Object ->
+                s3Object.objectContent.use { inputStream ->
+                    buildCacheEntryReader.readFrom(inputStream)
                     return true
                 }
+            }
+        } catch (e: AmazonServiceException) {
+            if (e.errorCode == "NoSuchKey") {
+                return false
+            } else {
+                throw BuildCacheException("Error while reading cache object from S3 bucket", e)
             }
         } catch (e: IOException) {
             throw BuildCacheException("Error while reading cache object from S3 bucket", e)
         }
     }
 
-
     override fun store(buildCacheKey: BuildCacheKey, buildCacheEntryWriter: BuildCacheEntryWriter) {
         val key: String = createS3Key(prefix, buildCacheKey.hashCode)
-//        S3BuildCacheService.log.info("Start storing cache entry. key='{}'", key)
+
         try {
             if (buildCacheEntryWriter.size < 10000000 /* 10MB */) {
                 ByteArrayOutputStream().use { os ->
@@ -69,11 +56,11 @@ open class S3BuildCacheService(
                 }
             } else {
                 // Use a temporary file to transfer the object
-                val file = File.createTempFile("s3-gradle-build-cache-plugin", ".tmp")
+                val file = File.createTempFile("talk2duck-gradle-s3-build-cache", ".tmp")
                 try {
                     FileOutputStream(file).use { os ->
                         buildCacheEntryWriter.writeTo(os)
-                        FileInputStream(file).use { `is` -> putObject(key, `is`, file.length()) }
+                        FileInputStream(file).use { inputStream -> putObject(key, inputStream, file.length()) }
                     }
                 } finally {
                     file.delete()
@@ -84,18 +71,35 @@ open class S3BuildCacheService(
         }
     }
 
-    private fun putObject(key: String, `is`: InputStream, size: Long) {
-        val meta = ObjectMetadata()
-        meta.contentType = BUILD_CACHE_CONTENT_TYPE
-        meta.contentLength = size
-        val request = PutObjectRequest(bucketName, key, `is`, meta)
-        if (reducedRedundancyStorage) {
-            request.setStorageClass(StorageClass.ReducedRedundancy)
+    private fun putObject(key: String, inputStream: InputStream, size: Long) {
+        val meta = ObjectMetadata().apply {
+            contentType = BUILD_CACHE_CONTENT_TYPE
+            contentLength = size
         }
-        amazonS3!!.putObject(request)
+
+        val request = PutObjectRequest(bucketName, key, inputStream, meta).apply {
+            if (reducedRedundancyStorage) {
+                setStorageClass(StorageClass.ReducedRedundancy)
+            }
+        }
+
+        amazonS3.putObject(request)
+    }
+
+    private fun createS3Key(prefix: String, buildCacheHashCode: String): String {
+        return when {
+            prefix.isEmpty() -> buildCacheHashCode
+            else -> {
+                StringBuilder().apply {
+                    append(prefix)
+                    if (!prefix.endsWith("/")) append("/")
+                    append(buildCacheHashCode)
+                }.toString()
+            }
+        }
     }
 
     override fun close() {
-        amazonS3!!.shutdown()
+        amazonS3.shutdown()
     }
 }
