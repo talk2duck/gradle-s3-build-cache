@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
 import java.io.OutputStream
 import java.util.UUID.nameUUIDFromBytes
 
-
 class S3BuildCacheServiceTest {
 
     @Test
@@ -22,7 +21,7 @@ class S3BuildCacheServiceTest {
         cacheService.store(cacheKey, cacheEntryWriterFor(cacheData))
         assertThat(readCacheDataFromS3(cacheKey), equalTo(cacheData))
 
-        var dataFromCache  = ByteArray(0)
+        var dataFromCache = ByteArray(0)
         val found = cacheService.load(cacheKey) { dataFromCache = it.readAllBytes() }
         assertThat(found, equalTo(true))
         assertThat(String(dataFromCache), equalTo(cacheData))
@@ -30,7 +29,7 @@ class S3BuildCacheServiceTest {
 
     @Test
     fun `should not blow up when loading missing item`() {
-        var dataFromCache  = ByteArray(0)
+        var dataFromCache = ByteArray(0)
         val found = cacheService.load(TestBuildCacheKey("some invalid cache key")) { dataFromCache = it.readAllBytes() }
         assertThat(found, equalTo(false))
         assertThat(dataFromCache.size, equalTo(0))
@@ -38,7 +37,6 @@ class S3BuildCacheServiceTest {
 
     private val bucketName = "some-build-cache"
     private val prefix = "cache/"
-
     private val amazonS3 = createAmazonS3Client(S3BuildCache().apply {
         awsAccessKeyId = "someKey"
         awsSecretKey = "someSecret"
@@ -47,7 +45,6 @@ class S3BuildCacheServiceTest {
     }).apply {
         createBucket(bucketName)
     }
-
     private val cacheService = S3BuildCacheService(amazonS3, bucketName, prefix, true)
 
     private fun readCacheDataFromS3(cacheKey: TestBuildCacheKey) = String(amazonS3.getObject(bucketName, prefix + cacheKey.hashCode).objectContent.readAllBytes())
@@ -59,7 +56,7 @@ class S3BuildCacheServiceTest {
         override fun toByteArray() = data.toByteArray()
     }
 
-    private fun cacheEntryWriterFor(data: String) = object: BuildCacheEntryWriter {
+    private fun cacheEntryWriterFor(data: String) = object : BuildCacheEntryWriter {
         override fun writeTo(outputStream: OutputStream) = outputStream.write(data.toByteArray())
         override fun getSize() = data.toByteArray().size.toLong()
     }
