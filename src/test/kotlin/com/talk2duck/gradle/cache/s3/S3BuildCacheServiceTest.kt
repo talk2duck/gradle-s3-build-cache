@@ -65,7 +65,6 @@ class S3BuildCacheServiceTest {
         lateinit var localS3Url: String
         private val localS3 = S3Mock.Builder().withPort(0).withInMemoryBackend().build()
 
-
         @BeforeAll
         @JvmStatic
         fun setupMockS3() {
