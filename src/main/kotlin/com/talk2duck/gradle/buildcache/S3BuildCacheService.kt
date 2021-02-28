@@ -1,4 +1,4 @@
-package com.talk2duck.gradle.cache.s3
+package com.talk2duck.gradle.buildcache
 
 import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3

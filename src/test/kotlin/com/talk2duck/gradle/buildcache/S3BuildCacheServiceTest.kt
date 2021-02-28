@@ -1,8 +1,8 @@
-package com.talk2duck.gradle.cache.s3
+package com.talk2duck.gradle.buildcache
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import com.talk2duck.gradle.cache.s3.S3BuildCacheServiceFactory.Companion.createAmazonS3Client
+import com.talk2duck.gradle.buildcache.S3BuildCacheServiceFactory.Companion.createAmazonS3Client
 import io.findify.s3mock.S3Mock
 import org.gradle.caching.BuildCacheEntryWriter
 import org.gradle.caching.BuildCacheKey

@@ -1,4 +1,4 @@
-package com.talk2duck.gradle.cache.s3
+package com.talk2duck.gradle.buildcache
 
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings

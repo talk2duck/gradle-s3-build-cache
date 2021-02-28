@@ -1,4 +1,4 @@
-package com.talk2duck.gradle.cache.s3
+package com.talk2duck.gradle.buildcache
 
 import org.gradle.caching.configuration.AbstractBuildCache
 

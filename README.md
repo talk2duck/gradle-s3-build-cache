@@ -38,7 +38,7 @@ buildCache {
   local {
     enabled = !isCiServer
   }
-  remote(com.talk2duck.gradle.cache.s3.S3BuildCache) {
+  remote(com.talk2duck.gradle.buildcache.S3BuildCache) {
     region = '<your region>'
     bucket = '<your bucket name>'
     push = isCiServer

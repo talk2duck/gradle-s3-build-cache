@@ -52,7 +52,7 @@ configurations.compile.dependencies.remove dependencies.gradleApi()
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
-    prefix = "com.talk2duck.gradle.cache.shadow"
+    prefix = "com.talk2duck.gradle.buildcache.shadow"
 }
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
@@ -75,7 +75,7 @@ gradlePlugin {
     plugins {
         s3BuildCache {
             id = 'com.talk2duck.gradle-s3-build-cache'
-            implementationClass = 'com.talk2duck.gradle.cache.s3.S3BuildCachePlugin'
+            implementationClass = 'com.talk2duck.gradle.buildcache.S3BuildCachePlugin'
             displayName = 'Gradle S3 Build Cache Plugin'
             description = 'Gradle build cache plugin that uses AWS S3 to store build artifacts'
         }
