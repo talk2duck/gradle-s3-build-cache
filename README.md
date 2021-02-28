@@ -26,7 +26,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "com.talk2duck:gradle-build-cache-plugin:0.1.3"
+    classpath "com.talk2duck:gradle-build-cache-plugin:1.0.0.0"
   }
 }
 
