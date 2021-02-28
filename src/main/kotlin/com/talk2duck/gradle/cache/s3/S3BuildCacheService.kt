@@ -18,6 +18,8 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
 
+private const val TEN_MB = 10000000
+
 open class S3BuildCacheService(
     private val amazonS3: AmazonS3,
     private val bucketName: String,
@@ -47,11 +49,13 @@ open class S3BuildCacheService(
     override fun store(buildCacheKey: BuildCacheKey, buildCacheEntryWriter: BuildCacheEntryWriter) {
         val key = createS3Key(prefix, buildCacheKey.hashCode)
         try {
-            if (buildCacheEntryWriter.size < 10000000 /* 10MB */) {
-                ByteArrayOutputStream().use { os ->
-                    buildCacheEntryWriter.writeTo(os)
-                    val bytes = os.toByteArray()
-                    ByteArrayInputStream(bytes).use { inputStream -> putObject(key, inputStream, bytes.size.toLong()) }
+            if (buildCacheEntryWriter.size < TEN_MB) {
+                ByteArrayOutputStream().use { outputStream ->
+                    buildCacheEntryWriter.writeTo(outputStream)
+                    val bytes = outputStream.toByteArray()
+                    ByteArrayInputStream(bytes).use { inputStream ->
+                        putObject(key, inputStream, bytes.size.toLong())
+                    }
                 }
             } else {
                 // Use a temporary file to transfer the object

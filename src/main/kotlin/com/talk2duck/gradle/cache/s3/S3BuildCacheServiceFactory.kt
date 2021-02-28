@@ -35,33 +35,37 @@ open class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
         )
     }
 
-    private fun createAmazonS3Client(configuration: S3BuildCache): AmazonS3 {
-        val s3Builder = AmazonS3ClientBuilder.standard()
+    companion object {
+        fun createAmazonS3Client(configuration: S3BuildCache): AmazonS3 {
+            val s3Builder = AmazonS3ClientBuilder.standard()
 
-        if (configuration.awsAccessKeyId.isNotEmpty() || configuration.awsSecretKey.isNotEmpty()) {
-            val credentials = if (configuration.sessionToken.isEmpty()) {
-                BasicAWSCredentials(
-                    configuration.awsAccessKeyId,
-                    configuration.awsSecretKey
-                )
-            } else {
-                BasicSessionCredentials(
-                    configuration.awsAccessKeyId,
-                    configuration.awsSecretKey,
-                    configuration.sessionToken
-                )
+            if (configuration.awsAccessKeyId.isNotEmpty() || configuration.awsSecretKey.isNotEmpty()) {
+                val credentials = if (configuration.sessionToken.isEmpty()) {
+                    BasicAWSCredentials(
+                        configuration.awsAccessKeyId,
+                        configuration.awsSecretKey
+                    )
+                } else {
+                    BasicSessionCredentials(
+                        configuration.awsAccessKeyId,
+                        configuration.awsSecretKey,
+                        configuration.sessionToken
+                    )
+                }
+                s3Builder.credentials = AWSStaticCredentialsProvider(credentials)
             }
-            s3Builder.credentials = AWSStaticCredentialsProvider(credentials)
-        }
 
-        if (configuration.region.isNotEmpty()) {
-            s3Builder.region = configuration.region
-        }
+            if (configuration.region.isNotEmpty()) {
+                s3Builder.region = configuration.region
+            }
 
-        if (configuration.endpoint.isNotEmpty()) {
-            s3Builder.setEndpointConfiguration(EndpointConfiguration(configuration.endpoint, configuration.region))
-        }
+            if (configuration.endpoint.isNotEmpty()) {
+                s3Builder
+                    .withPathStyleAccessEnabled(true)
+                    .setEndpointConfiguration(EndpointConfiguration(configuration.endpoint, configuration.region))
+            }
 
-        return s3Builder.build()
+            return s3Builder.build()
+        }
     }
 }

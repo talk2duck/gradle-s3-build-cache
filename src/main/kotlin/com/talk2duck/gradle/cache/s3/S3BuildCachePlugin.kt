@@ -10,6 +10,3 @@ class S3BuildCachePlugin : Plugin<Settings> {
 private fun Settings.applyS3BuildCachePlugin() {
     settings.buildCache.registerBuildCacheService(S3BuildCache::class.java, S3BuildCacheServiceFactory::class.java)
 }
-
-
-

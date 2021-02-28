@@ -2,8 +2,10 @@ ext {
     kotlinVersion = "1.4.30"
     gradlePublishPluginVersion = "0.13.0"
     junitVersion = "5.7.0"
-    awsVersion = "1.11.872"
+    hamkrestVersion = "1.8.0.1"
     shadowjarVersion = "6.1.0"
+    awsVersion = "1.11.872"
+    testContainersVersion = "1.15.2"
 
     kotlin = [
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
@@ -17,14 +19,19 @@ ext {
             "com.github.jengelman.gradle.plugins:shadow:$shadowjarVersion"
     ]
 
+    awsS3 = [
+            "com.amazonaws:aws-java-sdk-s3:$awsVersion"
+    ]
+
     testing = [
             "org.junit.jupiter:junit-jupiter-api:$junitVersion",
             "org.junit.jupiter:junit-jupiter-engine:$junitVersion",
-            "org.junit.jupiter:junit-jupiter-params:$junitVersion"
-    ]
-
-    awsS3 = [
-            "com.amazonaws:aws-java-sdk-s3:$awsVersion"
+            "org.junit.jupiter:junit-jupiter-params:$junitVersion",
+            "com.natpryce:hamkrest:$hamkrestVersion",
+            "org.testcontainers:testcontainers:$testContainersVersion",
+            "org.testcontainers:junit-jupiter:$testContainersVersion",
+            "org.testcontainers:localstack:$testContainersVersion",
+            "io.findify:s3mock_2.12:0.2.6"
     ]
 
 }

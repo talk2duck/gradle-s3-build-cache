@@ -36,9 +36,6 @@ compileTestKotlin {
     }
 }
 
-sourceCompatibility = 11
-targetCompatibility = 11
-
 repositories {
     mavenCentral()
 }
@@ -47,6 +44,8 @@ dependencies {
     shadow localGroovy()
     shadow gradleApi()
     compileOnly awsS3
+
+    testImplementation awsS3
     testImplementation testing
 }
 
@@ -70,6 +69,7 @@ shadowJar{
 }
 
 test {
+    environment "TESTCONTAINERS_RYUK_DISABLED", "true"
     useJUnitPlatform()
 }
 
