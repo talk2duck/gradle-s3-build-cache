@@ -8,9 +8,7 @@ class S3BuildCachePlugin : Plugin<Settings> {
 }
 
 private fun Settings.applyS3BuildCachePlugin() {
-
-    val buildCacheConfiguration = settings.buildCache
-    buildCacheConfiguration.registerBuildCacheService(S3BuildCache::class.java, S3BuildCacheServiceFactory::class.java)
+    settings.buildCache.registerBuildCacheService(S3BuildCache::class.java, S3BuildCacheServiceFactory::class.java)
 }
 
 

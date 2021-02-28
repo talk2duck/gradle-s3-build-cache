@@ -3,7 +3,7 @@ package com.talk2duck.gradle.cache.s3
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.auth.BasicSessionCredentials
-import com.amazonaws.client.builder.AwsClientBuilder
+import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
 import org.gradle.caching.BuildCacheService
@@ -59,10 +59,9 @@ open class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
         }
 
         if (configuration.endpoint.isNotEmpty()) {
-            s3Builder.setEndpointConfiguration(
-                AwsClientBuilder.EndpointConfiguration(configuration.endpoint, configuration.region)
-            )
+            s3Builder.setEndpointConfiguration(EndpointConfiguration(configuration.endpoint, configuration.region))
         }
+
         return s3Builder.build()
     }
 }

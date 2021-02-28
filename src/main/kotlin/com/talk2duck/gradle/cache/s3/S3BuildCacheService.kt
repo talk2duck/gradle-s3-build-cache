@@ -4,7 +4,7 @@ import com.amazonaws.AmazonServiceException
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.ObjectMetadata
 import com.amazonaws.services.s3.model.PutObjectRequest
-import com.amazonaws.services.s3.model.StorageClass
+import com.amazonaws.services.s3.model.StorageClass.ReducedRedundancy
 import org.gradle.caching.BuildCacheEntryReader
 import org.gradle.caching.BuildCacheEntryWriter
 import org.gradle.caching.BuildCacheException
@@ -45,14 +45,13 @@ open class S3BuildCacheService(
     }
 
     override fun store(buildCacheKey: BuildCacheKey, buildCacheEntryWriter: BuildCacheEntryWriter) {
-        val key: String = createS3Key(prefix, buildCacheKey.hashCode)
-
+        val key = createS3Key(prefix, buildCacheKey.hashCode)
         try {
             if (buildCacheEntryWriter.size < 10000000 /* 10MB */) {
                 ByteArrayOutputStream().use { os ->
                     buildCacheEntryWriter.writeTo(os)
                     val bytes = os.toByteArray()
-                    ByteArrayInputStream(bytes).use { `is` -> putObject(key, `is`, bytes.size.toLong()) }
+                    ByteArrayInputStream(bytes).use { inputStream -> putObject(key, inputStream, bytes.size.toLong()) }
                 }
             } else {
                 // Use a temporary file to transfer the object
@@ -79,7 +78,7 @@ open class S3BuildCacheService(
 
         val request = PutObjectRequest(bucketName, key, inputStream, meta).apply {
             if (reducedRedundancyStorage) {
-                setStorageClass(StorageClass.ReducedRedundancy)
+                setStorageClass(ReducedRedundancy)
             }
         }
 
