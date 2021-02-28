@@ -17,16 +17,23 @@ class S3BuildCacheServiceTest {
 
     @Test
     fun `should store and load data from s3 cache`() {
-        val data = "some data"
-        val cacheKey = TestBuildCacheKey(data)
-        val cacheService = S3BuildCacheService(amazonS3, bucketName, prefix, true)
-
-        cacheService.store(cacheKey, cacheEntryWriterFor(data))
-        assertThat(readCacheDataFromS3(cacheKey), equalTo(data))
+        val cacheData = "some data"
+        val cacheKey = TestBuildCacheKey(cacheData)
+        cacheService.store(cacheKey, cacheEntryWriterFor(cacheData))
+        assertThat(readCacheDataFromS3(cacheKey), equalTo(cacheData))
 
         var dataFromCache  = ByteArray(0)
-        cacheService.load(cacheKey) { dataFromCache = it.readAllBytes() }
-        assertThat(String(dataFromCache), equalTo(data))
+        val found = cacheService.load(cacheKey) { dataFromCache = it.readAllBytes() }
+        assertThat(found, equalTo(true))
+        assertThat(String(dataFromCache), equalTo(cacheData))
+    }
+
+    @Test
+    fun `should not blow up when loading missing item`() {
+        var dataFromCache  = ByteArray(0)
+        val found = cacheService.load(TestBuildCacheKey("some invalid cache key")) { dataFromCache = it.readAllBytes() }
+        assertThat(found, equalTo(false))
+        assertThat(dataFromCache.size, equalTo(0))
     }
 
     private val bucketName = "some-build-cache"
@@ -40,6 +47,8 @@ class S3BuildCacheServiceTest {
     }).apply {
         createBucket(bucketName)
     }
+
+    private val cacheService = S3BuildCacheService(amazonS3, bucketName, prefix, true)
 
     private fun readCacheDataFromS3(cacheKey: TestBuildCacheKey) = String(amazonS3.getObject(bucketName, prefix + cacheKey.hashCode).objectContent.readAllBytes())
 
