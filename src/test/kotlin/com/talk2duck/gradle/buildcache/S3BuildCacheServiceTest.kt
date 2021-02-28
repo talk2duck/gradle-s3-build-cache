@@ -41,7 +41,6 @@ class S3BuildCacheServiceTest {
         awsAccessKeyId = "someKey"
         awsSecretKey = "someSecret"
         endpoint = localS3Url
-        region = ""
     }).apply {
         createBucket(bucketName)
     }

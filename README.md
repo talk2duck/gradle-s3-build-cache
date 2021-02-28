@@ -55,7 +55,7 @@ buildCache {
 | sessionToken             | String  | The AWS sessionToken                                                                                       |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
 | region                   | String  | The AWS region                                                                                             | yes       |               |
 | bucket                   | String  | The name of the AWS S3 bucket where cache objects should be stored.                                        | yes       |               |
-| prefix                   | String  | The prefix of the AWS S3 object key in the bucket                                                          |           |               |
+| prefix                   | String  | The prefix of the AWS S3 object key in the bucket                                                          |           | `cache/`      |
 | endpoint                 | String  | The S3 endpoint                                                                                            |           |               |
 | reducedRedundancyStorage | boolean | Whether to use [Reduced Redundancy Storage](https://aws.amazon.com/s3/reduced-redundancy/?nc1=h_ls) or not |           | `true`        |
 

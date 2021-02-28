@@ -6,7 +6,7 @@ open class S3BuildCache : AbstractBuildCache() {
     var awsAccessKeyId: String = ""
     var awsSecretKey: String = ""
     var sessionToken: String = ""
-    var region: String = "eu-west-2"
+    var region: String = ""
     var bucket: String = ""
     var prefix: String = "cache/"
     var endpoint: String = ""
