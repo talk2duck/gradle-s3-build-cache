@@ -100,6 +100,8 @@ See [the official doc](https://docs.gradle.org/current/userguide/build_cache.htm
 
 This project uses explicit versioning *Release.Breaking.Feature.Fix* as described [here](https://medium.com/sapioit/why-having-3-numbers-in-the-version-name-is-bad-92fc1f6bc73c).
 
+![Explicit Versioning](/explicit-versioning.png)
+
 
 # License
 
