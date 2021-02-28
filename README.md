@@ -1,11 +1,15 @@
-# gradle-s3-build-cache
+# Gradle S3 Build Cache
 
-Gradle build cache that uses AWS S3 to store build artifacts.
+[![Build](https://github.com/talk2duck/gradle-s3-build-cache/actions/workflows/build.yaml/badge.svg)](https://github.com/talk2duck/gradle-s3-build-cache/actions/workflows/build.yaml)
+
+
+Makes use of the [Gradle build cache](https://docs.gradle.org/current/userguide/build_cache.html) and stores build artifacts 
+in AWS S3 bucket.
 
 
 ## Usage
 
-Project is in early stages so use at your own  risk
+*NOTE: Project is in early stages so use at your own risk.*
 
 ### Apply plugin
 
@@ -19,7 +23,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "com.talk2duck:gradle-build-cache-plugin:0.1.0"
+    classpath "com.talk2duck:gradle-build-cache-plugin:0.1.3"
   }
 }
 
@@ -67,7 +71,7 @@ The AWS credential must have at least the following permissions to the bucket:
 
 ```json
 {
-  "Version": "2012-10-17",
+  "Version": "2020-10-17",
   "Statement": [
     {
       "Effect": "Allow",
