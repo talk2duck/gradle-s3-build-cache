@@ -2,6 +2,7 @@
 
 [![Build](https://github.com/talk2duck/gradle-s3-build-cache/actions/workflows/build.yaml/badge.svg)](https://github.com/talk2duck/gradle-s3-build-cache/actions/workflows/build.yaml)
 <a href="LICENSE"><img alt="GitHub license" src="https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat"></a>
+<a href="http://kotlinlang.org"><img alt="kotlin version" src="https://img.shields.io/badge/kotlin-1.4-blue.svg"></a>
 
 
 
