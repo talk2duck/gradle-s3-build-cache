@@ -12,4 +12,3 @@ open class S3BuildCache : AbstractBuildCache() {
     var endpoint: String = ""
     var reducedRedundancyStorage = true
 }
-
