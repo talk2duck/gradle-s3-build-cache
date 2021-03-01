@@ -1,8 +1,12 @@
 package com.talk2duck.gradle.buildcache
 
+import com.amazonaws.auth.AWSCredentialsProvider
+import com.amazonaws.auth.AWSCredentialsProviderChain
 import com.amazonaws.auth.AWSStaticCredentialsProvider
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.auth.BasicSessionCredentials
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
+import com.amazonaws.auth.profile.ProfileCredentialsProvider
 import com.amazonaws.client.builder.AwsClientBuilder.EndpointConfiguration
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.AmazonS3ClientBuilder
@@ -20,11 +24,11 @@ open class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
             .config("bucket", configuration.bucket)
             .config("reducedRedundancyStorage", java.lang.String.valueOf(configuration.reducedRedundancyStorage))
 
-        if (configuration.prefix.isNotEmpty()) {
+        if (configuration.prefix.isNotBlank()) {
             describer.config("prefix", configuration.prefix)
         }
 
-        if (configuration.endpoint.isNotEmpty()) {
+        if (configuration.endpoint.isNotBlank()) {
             describer.config("endpoint", configuration.endpoint)
         }
         return S3BuildCacheService(
@@ -38,28 +42,42 @@ open class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
     companion object {
         fun createAmazonS3Client(configuration: S3BuildCache): AmazonS3 {
             val s3Builder = AmazonS3ClientBuilder.standard()
+            val credentials = mutableListOf<AWSCredentialsProvider>()
 
-            if (configuration.awsAccessKeyId.isNotEmpty() || configuration.awsSecretKey.isNotEmpty()) {
-                val credentials = if (configuration.sessionToken.isEmpty()) {
-                    BasicAWSCredentials(
-                        configuration.awsAccessKeyId,
-                        configuration.awsSecretKey
+            if (configuration.awsAccessKeyId.isNotBlank() || configuration.awsSecretKey.isNotBlank()) {
+                if (configuration.sessionToken.isNotBlank()) {
+                    credentials.add(
+                        AWSStaticCredentialsProvider(
+                            BasicAWSCredentials(
+                                configuration.awsAccessKeyId,
+                                configuration.awsSecretKey
+                            )
+                        )
                     )
                 } else {
-                    BasicSessionCredentials(
-                        configuration.awsAccessKeyId,
-                        configuration.awsSecretKey,
-                        configuration.sessionToken
+                    credentials.add(
+                        AWSStaticCredentialsProvider(
+                            BasicSessionCredentials(
+                                configuration.awsAccessKeyId,
+                                configuration.awsSecretKey,
+                                configuration.sessionToken
+                            )
+                        )
                     )
                 }
-                s3Builder.credentials = AWSStaticCredentialsProvider(credentials)
+            } else if (configuration.awsProfile.isNotBlank()) {
+                credentials.add(ProfileCredentialsProvider(configuration.awsProfile))
+            } else {
+                credentials.add(DefaultAWSCredentialsProviderChain())
             }
 
-            if (configuration.region.isNotEmpty()) {
+            s3Builder.credentials = AWSCredentialsProviderChain(credentials)
+
+            if (configuration.region.isNotBlank()) {
                 s3Builder.region = configuration.region
             }
 
-            if (configuration.endpoint.isNotEmpty()) {
+            if (configuration.endpoint.isNotBlank()) {
                 s3Builder
                     .withPathStyleAccessEnabled(true)
                     .setEndpointConfiguration(EndpointConfiguration(configuration.endpoint, configuration.region))

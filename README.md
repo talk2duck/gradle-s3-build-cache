@@ -51,6 +51,7 @@ buildCache {
 | ------------------------ | ------- | ---------------------------------------------------------------------------------------------------------- | --------- | ------------- |
 | awsAccessKeyId           | String  | The AWS access key id                                                                                      |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
 | awsSecretKey             | String  | The AWS secret access key                                                                                  |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
+| awsProfile               | String  | The AWS profile to source credentials from                                                                 |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
 | sessionToken             | String  | The AWS sessionToken                                                                                       |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
 | region                   | String  | The AWS region                                                                                             | yes       |               |
 | bucket                   | String  | The name of the AWS S3 bucket where cache objects should be stored.                                        | yes       |               |
@@ -62,6 +63,10 @@ buildCache {
 
 By default, this plugin uses `Default Credential Provider Chain` to lookup the AWS credentials.  
 See [Using the Default Credential Provider Chain - AWS SDK for Java](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) for more details.
+
+
+You can also select which `profile` to use for AWS authentication by specifying `awsProfile`.  
+See [Configuring the AWS CLI - Named profiles](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html) for more details. 
 
 If you want to set `access key id` and `secret access key` manually,
 configure `awsAccessKeyId` and `awsSecretKey` (and `sessionToken` optionally).
