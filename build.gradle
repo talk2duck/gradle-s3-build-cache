@@ -10,11 +10,12 @@ buildscript {
 }
 
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
     id 'java-gradle-plugin'
     id 'maven-publish'
     id 'com.github.johnrengelman.shadow' version "$shadowjarVersion"
     id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
+    id 'com.jfrog.bintray' version "1.8.4"
 }
 
 group 'com.talk2duck'
@@ -86,4 +87,64 @@ pluginBundle {
     website = 'https://github.com/talk2duck/gradle-s3-build-cache'
     vcsUrl = 'https://github.com/talk2duck/gradle-s3-build-cache'
     tags = ['build-cache', 'cache', 's3']
+}
+
+
+publishing {
+    publications {
+        shadow(MavenPublication) {publication ->
+            project.shadow.component(publication)
+            pom.withXml {
+                asNode().appendNode('name', project.name)
+                asNode().appendNode('description', description)
+                asNode().appendNode('url', 'https://www.talk2duck.com')
+                asNode().appendNode('developers')
+                        .appendNode('developer').appendNode('name', 'Albert Latacz').parent().appendNode('email', 'support@talk2duck.com')
+                asNode().appendNode('scm').
+                        appendNode('url', 'git@github.com:talk2duck/gradle-s3-build-cache.git').parent().
+                        appendNode('connection', 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git').parent().
+                        appendNode('developerConnection', 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git')
+                asNode().appendNode('licenses').appendNode('license').
+                        appendNode('name', 'Apache License, Version 2.0').parent().
+                        appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.html')
+            }
+
+            // replace all runtime dependencies with provided
+            pom.withXml {
+                asNode().dependencies.'*'.findAll() {
+                    it.scope.text() == 'runtime'
+                }.each() {
+                    it.scope*.value = 'provided'
+                }
+            }
+//            artifact sourcesJar
+//            artifact javadocJar
+        }
+    }
+}
+
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publications = ['shadow']
+    dryRun = false
+    publish = true
+    pkg {
+        repo = 'maven'
+        userOrg = 'talk2duck'
+        name = project.name
+        desc = description
+        websiteUrl = 'https://github.com/talk2duck/gradle-s3-build-cache'
+        issueTrackerUrl = 'https://github.com/talk2duck/gradle-s3-build-cache/issues'
+        vcsUrl = 'https://github.com/talk2duck/gradle-s3-build-cache.git'
+        licenses = ['Apache-2.0']
+        labels = []
+        publicDownloadNumbers = true
+        version {
+            name = project.version
+            vcsTag = project.version
+
+        }
+    }
 }
