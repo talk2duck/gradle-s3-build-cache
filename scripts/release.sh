@@ -21,7 +21,7 @@ echo "Creating release $PROJECT_NAME:$NEW_VERSION"
 
 git stash
 
-BINTRAY_VERSION=$(curl -s "$BINTRAY_LATEST_VERSION_URL" | "$TOOLS_DIR"/jq -r .name)
+BINTRAY_VERSION=$(curl -s "$BINTRAY_LATEST_VERSION_URL" | $JQ -r .name)
 
 sed -i -- s/"$BINTRAY_VERSION"/"$NEW_VERSION"/g "README.md"
 sed -i -- s/"$BINTRAY_VERSION"/"$NEW_VERSION"/g "version.json"
