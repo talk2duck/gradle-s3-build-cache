@@ -15,9 +15,9 @@ buildscript {
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
     id 'maven-publish'
-//    id 'maven'
-//    id 'signing'
-//    id "io.codearte.nexus-staging" version '0.22.0'
+    id 'maven'
+    id 'signing'
+    id "io.codearte.nexus-staging" version '0.22.0'
     id 'java-gradle-plugin'
     id 'com.github.johnrengelman.shadow' version "$shadowjarVersion"
     id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
@@ -115,36 +115,36 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 }
 
 
-//signing {
-//    def signingKey = findProperty("signingKey")
-//    def signingPassword = findProperty("signingPassword")
-//
-//    useInMemoryPgpKeys(signingKey, signingPassword)
-//    sign publishing.publications
-//}
-//
-//def nexusUsername = project.findProperty('nexusUsername') ?: "notset"
-//def nexusPassword = project.findProperty('nexusPassword') ?: "notset"
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications
+}
+
+def nexusUsername = project.findProperty('nexusUsername') ?: "notset"
+def nexusPassword = project.findProperty('nexusPassword') ?: "notset"
 
 publishing {
-//    repositories {
-//        maven {
-//            name 'SonatypeStaging'
-//            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
-//            credentials {
-//                username nexusUsername
-//                password nexusPassword
-//            }
-//        }
-//        maven {
-//            name 'SonatypeSnapshot'
-//            url 'https://oss.sonatype.org/content/repositories/snapshots/'
-//            credentials {
-//                username nexusUsername
-//                password nexusPassword
-//            }
-//        }
-//    }
+    repositories {
+        maven {
+            name 'SonatypeStaging'
+            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+        }
+        maven {
+            name 'SonatypeSnapshot'
+            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+        }
+    }
 
     publications {
         shadow(MavenPublication) { publication ->
