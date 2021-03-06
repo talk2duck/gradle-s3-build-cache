@@ -23,6 +23,8 @@ jobs:
       - name: Publish to Bintray
         run: ./scripts/release-publish-bintray.sh
         env:
+          SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+          SIGNING_PASSWORD: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
 
