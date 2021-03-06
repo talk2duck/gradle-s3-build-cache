@@ -12,7 +12,14 @@ PROJECT_ID="gradle-s3-build-cache"
 PROJECT_ROOT_DIR=$(realpath "$SCRIPTS_DIR/..")
 
 TOOLS_DIR="$SCRIPTS_DIR/tools"
-JQ="$TOOLS_DIR/jq"
+
+if ! command -v jq &> /dev/null
+then
+    JQ="$TOOLS_DIR/jq"
+else
+    JQ=jq
+fi
+
 
 BINTRAY_LATEST_VERSION_URL="https://bintray.com/api/v1/packages/talk2duck/maven/${PROJECT_ID}/versions/_latest"
 
