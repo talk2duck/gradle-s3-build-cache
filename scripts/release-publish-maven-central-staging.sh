@@ -10,14 +10,6 @@ source "$SET_ENV_DIR/set-environment.sh"
 
 cd "$PROJECT_ROOT_DIR" || exit 1
 
-./gradlew publishMavenJavaPublicationToSonatypeStagingRepository \
-  -PsigningKey="${SIGNING_KEY}" \
-  -PsigningPassword="${SIGNING_PASSWORD}" \
-  -PnexusUsername="${NEXUS_USERNAME}" \
-  -PnexusPassword="${NEXUS_PASSWORD}"
-
-./gradlew closeAndReleaseRepository \
-  -PnexusUsername="${NEXUS_USERNAME}" \
-  -PnexusPassword="${NEXUS_PASSWORD}"
-
+./gradlew publishMavenJavaPublicationToSonatypeStagingRepository
+./gradlew closeAndReleaseRepository
 
