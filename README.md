@@ -21,7 +21,7 @@ settings.gradle
 buildscript {
   repositories {
     maven {
-      url "https://plugins.gradle.org/m2/"
+      url "https://dl.bintray.com/talk2duck/maven"
     }
   }
   dependencies {
