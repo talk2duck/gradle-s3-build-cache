@@ -18,7 +18,7 @@ function printProjectInfo() {
   echo "Project (${PROJECT_ID}) "
   echo "  Name: ${PROJECT_NAME} "
   echo "  Directory: ${PROJECT_ROOT_DIR} "
-  echo "  Version: ${PROJECT_VERSION} "
+  echo "  Local version: ${PROJECT_VERSION} "
   echo "  Owner: ${PROJECT_OWNER} "
   echo
 }
