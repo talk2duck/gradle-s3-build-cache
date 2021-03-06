@@ -17,12 +17,10 @@ in AWS S3 bucket.
 
 settings.gradle
 
-```
+```groovy
 buildscript {
   repositories {
-    maven {
-      url "https://dl.bintray.com/talk2duck/maven"
-    }
+    mavenCentral()
   }
   dependencies {
     classpath "com.talk2duck:gradle-build-cache-plugin:1.0.0.17"
