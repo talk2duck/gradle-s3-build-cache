@@ -10,5 +10,7 @@ if [ "$VERSION" == "" ]; then
   exit 1
 fi
 
-echo "Creating release $VERSION"
-echo "Scripts $SCRIPTS_DIR"
+echo "Creating release $PROJECT_NAME:$VERSION"
+
+git tag -a "$VERSION" -m "$PROJECT_NAME $VERSION"
+git push origin "$VERSION"
