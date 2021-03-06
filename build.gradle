@@ -17,7 +17,7 @@ plugins {
     id 'maven-publish'
     id 'maven'
     id 'signing'
-    id "io.codearte.nexus-staging" version '0.22.0'
+    id "io.codearte.nexus-staging" version '0.30.0'
     id 'java-gradle-plugin'
     id 'com.github.johnrengelman.shadow' version "$shadowjarVersion"
     id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
@@ -26,13 +26,6 @@ plugins {
 
 group 'com.talk2duck'
 version new JsonSlurper().parse(new File('version.json')).project.version
-
-apply plugin: 'io.codearte.nexus-staging'
-apply plugin: 'maven-publish' // required to configure bintray
-apply plugin: 'maven' // required to upload to sonatype
-apply plugin: 'signing'
-
-
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
@@ -194,6 +187,11 @@ publishing {
     }
 }
 
+nexusStaging {
+    serverUrl = 'https://s01.oss.sonatype.org/service/local'
+    username = nexusUsername
+    password = nexusPassword
+}
 
 bintray {
     user = System.getenv('BINTRAY_USER')
@@ -221,3 +219,5 @@ bintray {
         }
     }
 }
+
+
