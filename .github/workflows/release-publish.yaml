@@ -5,7 +5,7 @@ on:
 env:
   ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 jobs:
-  tag_and_release:
+  release_publish:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
