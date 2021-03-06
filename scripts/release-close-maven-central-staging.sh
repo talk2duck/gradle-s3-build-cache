@@ -10,8 +10,6 @@ source "$SET_ENV_DIR/set-environment.sh"
 
 cd "$PROJECT_ROOT_DIR" || exit 1
 
-./gradlew closeAndReleaseRepository \
-  -PnexusUsername="${NEXUS_USERNAME}" \
-  -PnexusPassword="${NEXUS_PASSWORD}"
+./gradlew closeAndReleaseRepository
 
 
