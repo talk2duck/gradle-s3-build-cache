@@ -169,7 +169,7 @@ publishing {
                 }
                 developers {
                     developer {
-                        name = 'Albert Latacz'
+                        name = 'Talk2Duck'
                         email = 'support@talk2duck.com'
                     }
                 }
@@ -182,7 +182,6 @@ publishing {
 
             artifact sourcesJar
             artifact javadocJar
-
         }
     }
 }

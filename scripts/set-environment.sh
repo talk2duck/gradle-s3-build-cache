@@ -15,11 +15,12 @@ else
 fi
 
 function printProjectInfo() {
-  echo "Project (${PROJECT_ID}) "
-  echo "  Name: ${PROJECT_NAME} "
-  echo "  Directory: ${PROJECT_ROOT_DIR} "
-  echo "  Local version: ${PROJECT_VERSION} "
-  echo "  Owner: ${PROJECT_OWNER} "
+  echo "Project (${PROJECT_ID})"
+  echo "  Name: ${PROJECT_NAME}"
+  echo "  Directory: ${PROJECT_ROOT_DIR}"
+  echo "  Local version: ${PROJECT_VERSION}"
+  echo "  Owner: ${PROJECT_OWNER}"
+  echo "  Bintray latest version: ${BINTRAY_LATEST_VERSION_URL}"
   echo
 }
 

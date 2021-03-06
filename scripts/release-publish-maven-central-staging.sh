@@ -12,4 +12,3 @@ cd "$PROJECT_ROOT_DIR" || exit 1
 
 ./gradlew publishMavenJavaPublicationToSonatypeStagingRepository
 ./gradlew closeAndReleaseRepository
-

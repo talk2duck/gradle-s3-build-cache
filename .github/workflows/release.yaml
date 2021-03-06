@@ -11,10 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Grab tag name
-        uses: olegtarasov/get-tag@v2
-        id: tagName
-
       - name: Setup JDK
         uses: actions/setup-java@v1
         with:
@@ -33,8 +29,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPOSITORY_PIPELINE_GITHUB_TOKEN }}
 
-      - name: Publish to Maven Central Staging
-        run: ./scripts/release-publish-maven-central-staging.sh
+      - name: Publish to Maven Central
+        run: ./scripts/release-publish-maven-central.sh
         env:
           SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
           SIGNING_PASSWORD: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
