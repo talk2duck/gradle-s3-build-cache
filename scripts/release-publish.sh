@@ -10,5 +10,5 @@ if [ "$VERSION" == "" ]; then
   exit 1
 fi
 
-echo "Releasing $VERSION"
+echo "Publishing $VERSION"
 echo "Scripts $SCRIPTS_DIR"

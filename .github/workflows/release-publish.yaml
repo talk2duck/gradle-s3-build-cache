@@ -21,7 +21,7 @@ jobs:
           java-version: 15
 
       - name: Upload to Sonatype
-        run: ./scripts/upload-release.sh "${{ steps.tagName.outputs.tag }}"
+        run: ./scripts/release-publish.sh "${{ steps.tagName.outputs.tag }}"
         env:
           BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
           BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
