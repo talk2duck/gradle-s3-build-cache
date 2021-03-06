@@ -11,15 +11,21 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
-    id 'java-gradle-plugin'
     id 'maven-publish'
+//    id 'maven'
+//    id 'signing'
+//    id "io.codearte.nexus-staging" version '0.22.0'
+    id 'java-gradle-plugin'
     id 'com.github.johnrengelman.shadow' version "$shadowjarVersion"
     id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
     id 'com.jfrog.bintray' version "1.8.4"
 }
 
 group 'com.talk2duck'
-version '1.0.0.0'
+version '1.0.0.1'
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
 
 compileKotlin {
     kotlinOptions {
@@ -51,6 +57,7 @@ dependencies {
 configurations.compile.dependencies.remove dependencies.gradleApi()
 
 import com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation
+
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
     prefix = "com.talk2duck.gradle.buildcache.shadow"
@@ -58,8 +65,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
-
-shadowJar{
+shadowJar {
     configurations = [project.configurations.compileOnly]
     archiveClassifier.set('')
     mergeServiceFiles()
@@ -89,36 +95,86 @@ pluginBundle {
     tags = ['build-cache', 'cache', 's3']
 }
 
+jar {
+    manifest {
+        attributes(
+                'com.talk2duck.gradle.buildcache.version': archiveVersion
+        )
+    }
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    archiveClassifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    archiveClassifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+
+//signing {
+//    def signingKey = findProperty("signingKey")
+//    def signingPassword = findProperty("signingPassword")
+//
+//    useInMemoryPgpKeys(signingKey, signingPassword)
+//    sign publishing.publications
+//}
+//
+//def nexusUsername = project.findProperty('nexusUsername') ?: "notset"
+//def nexusPassword = project.findProperty('nexusPassword') ?: "notset"
 
 publishing {
-    publications {
-        shadow(MavenPublication) {publication ->
-            project.shadow.component(publication)
-            pom.withXml {
-                asNode().appendNode('name', project.name)
-                asNode().appendNode('description', description)
-                asNode().appendNode('url', 'https://www.talk2duck.com')
-                asNode().appendNode('developers')
-                        .appendNode('developer').appendNode('name', 'Albert Latacz').parent().appendNode('email', 'support@talk2duck.com')
-                asNode().appendNode('scm').
-                        appendNode('url', 'git@github.com:talk2duck/gradle-s3-build-cache.git').parent().
-                        appendNode('connection', 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git').parent().
-                        appendNode('developerConnection', 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git')
-                asNode().appendNode('licenses').appendNode('license').
-                        appendNode('name', 'Apache License, Version 2.0').parent().
-                        appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.html')
-            }
+//    repositories {
+//        maven {
+//            name 'SonatypeStaging'
+//            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+//            credentials {
+//                username nexusUsername
+//                password nexusPassword
+//            }
+//        }
+//        maven {
+//            name 'SonatypeSnapshot'
+//            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+//            credentials {
+//                username nexusUsername
+//                password nexusPassword
+//            }
+//        }
+//    }
 
-            // replace all runtime dependencies with provided
-            pom.withXml {
-                asNode().dependencies.'*'.findAll() {
-                    it.scope.text() == 'runtime'
-                }.each() {
-                    it.scope*.value = 'provided'
+    publications {
+        shadow(MavenPublication) { publication ->
+            project.shadow.component(publication)
+
+            pom {
+                name = project.name
+                description = 'Gradle build cache plugin that uses AWS S3 to store build artifacts'
+                url = 'https://www.talk2duck.com'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        name = 'Albert Latacz'
+                        email = 'support@talk2duck.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git'
+                    developerConnection = 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git'
+                    url = 'git@github.com:talk2duck/gradle-s3-build-cache.git'
                 }
             }
-//            artifact sourcesJar
-//            artifact javadocJar
+
+            artifact sourcesJar
+            artifact javadocJar
+
         }
     }
 }

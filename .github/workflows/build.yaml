@@ -36,4 +36,4 @@ jobs:
           java-version: 15
 
       - name: Build
-        run: ./gradlew build
+        run: ./scripts/build.sh
