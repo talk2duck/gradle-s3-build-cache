@@ -25,7 +25,7 @@ plugins {
 }
 
 group 'com.talk2duck'
-version new JsonSlurper().parse(new File('version.json'))[project.name as String].version
+version new JsonSlurper().parse(new File('version.json')).project.version
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
