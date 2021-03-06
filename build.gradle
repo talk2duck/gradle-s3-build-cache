@@ -147,7 +147,7 @@ publishing {
     }
 
     publications {
-        shadow(MavenPublication) { publication ->
+        mavenJava(MavenPublication) { publication ->
             project.shadow.component(publication)
 
             pom {
@@ -184,7 +184,7 @@ publishing {
 bintray {
     user = System.getenv('BINTRAY_USER')
     key = System.getenv('BINTRAY_KEY')
-    publications = ['shadow']
+    publications = ['mavenJava']
     dryRun = false
     publish = true
     pkg {
