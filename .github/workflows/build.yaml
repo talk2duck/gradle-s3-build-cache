@@ -16,7 +16,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          # required by release-tag.sh to correctly identify files changed in the last commit
+          fetch-depth: 2
+          # required by release-tag.sh to allow pushing with another credentials so other workflows are triggered
+          persist-credentials: false
       - run: git fetch
 
       - name: Manage build cache
