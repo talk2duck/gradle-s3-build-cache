@@ -17,7 +17,7 @@ if [ "$NEW_VERSION" == "" ]; then
   exit 1
 fi
 
-echo "Creating release $PROJECT_NAME:$NEW_VERSION"
+echo "Release $PROJECT_ID version $NEW_VERSION"
 
 git stash
 
