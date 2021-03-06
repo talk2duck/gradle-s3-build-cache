@@ -18,5 +18,5 @@ jobs:
         with:
           java-version: 15
 
-      - name: Create release ${{ github.event.release_version }}
-        run: ./scripts/release.sh "${{ github.event.release_version }}"
+      - name: Create release ${{ github.event.inputs.release_version }}
+        run: ./scripts/release.sh "${{ github.event.inputs.release_version }}"
