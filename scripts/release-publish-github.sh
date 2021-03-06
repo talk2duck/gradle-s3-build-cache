@@ -8,7 +8,7 @@ set -o nounset
 SET_ENV_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 source "$SET_ENV_DIR/set-environment.sh"
 
-export PUBLISH_REQUEST_BODY=" $(mktemp)"
+export PUBLISH_REQUEST_BODY="$(mktemp)"
 
 cat >"${PUBLISH_REQUEST_BODY}" <<EOL
 {
