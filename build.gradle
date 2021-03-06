@@ -130,7 +130,16 @@ publishing {
     repositories {
         maven {
             name 'SonatypeStaging'
-            url 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+            url 'https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/'
+            credentials {
+                username nexusUsername
+                password nexusPassword
+            }
+        }
+
+        maven {
+            name 'SonatypeReleases'
+            url 'https://s01.oss.sonatype.org/service/local/releases/deploy/maven2/'
             credentials {
                 username nexusUsername
                 password nexusPassword
@@ -138,7 +147,7 @@ publishing {
         }
         maven {
             name 'SonatypeSnapshot'
-            url 'https://oss.sonatype.org/content/repositories/snapshots/'
+            url 'https://s01.oss.sonatype.org/service/local/snapshots/deploy/maven2/'
             credentials {
                 username nexusUsername
                 password nexusPassword

@@ -15,3 +15,9 @@ cd "$PROJECT_ROOT_DIR" || exit 1
   -PsigningPassword="${SIGNING_PASSWORD}" \
   -PnexusUsername="${NEXUS_USERNAME}" \
   -PnexusPassword="${NEXUS_PASSWORD}"
+
+./gradlew closeAndReleaseRepository \
+  -PnexusUsername="${NEXUS_USERNAME}" \
+  -PnexusPassword="${NEXUS_PASSWORD}"
+
+
