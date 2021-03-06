@@ -98,7 +98,7 @@ pluginBundle {
 jar {
     manifest {
         attributes(
-                'com.talk2duck.gradle.buildcache.version': archiveVersion
+                'gradle_buildcache_version': archiveVersion
         )
     }
 }
