@@ -27,6 +27,13 @@ plugins {
 group 'com.talk2duck'
 version new JsonSlurper().parse(new File('version.json')).project.version
 
+apply plugin: 'io.codearte.nexus-staging'
+apply plugin: 'maven-publish' // required to configure bintray
+apply plugin: 'maven' // required to upload to sonatype
+apply plugin: 'signing'
+
+
+
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = JavaVersion.VERSION_1_8
 
@@ -114,6 +121,10 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
 
 signing {
     def signingKey = findProperty("signingKey")
@@ -138,14 +149,6 @@ publishing {
         }
 
         maven {
-            name 'SonatypeReleases'
-            url 'https://s01.oss.sonatype.org/service/local/releases/deploy/maven2/'
-            credentials {
-                username nexusUsername
-                password nexusPassword
-            }
-        }
-        maven {
             name 'SonatypeSnapshot'
             url 'https://s01.oss.sonatype.org/service/local/snapshots/deploy/maven2/'
             credentials {
@@ -157,6 +160,8 @@ publishing {
 
     publications {
         mavenJava(MavenPublication) { publication ->
+            artifactId = project.name
+
             project.shadow.component(publication)
 
             pom {
@@ -210,7 +215,9 @@ bintray {
         version {
             name = project.version
             vcsTag = project.version
-
+            gpg {
+                sign = true
+            }
         }
     }
 }
