@@ -15,7 +15,7 @@ cat >"${PUBLISH_REQUEST_BODY}" <<EOL
   "tag_name": "${PROJECT_VERSION}",
   "target_commitish": "main",
   "name": "${PROJECT_VERSION}",
-  "body": "Description of the release",
+  "body": "Released ${PROJECT_NAME} version ${PROJECT_VERSION}",
   "draft": false,
   "prerelease": false
 }
