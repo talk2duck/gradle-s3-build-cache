@@ -7,6 +7,14 @@ env:
 jobs:
   release_publish:
     runs-on: ubuntu-latest
+    env:
+      SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
+      SIGNING_PASSWORD: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
+      NEXUS_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+      NEXUS_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+      BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+      GITHUB_TOKEN: ${{ secrets.REPOSITORY_PIPELINE_GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -17,22 +25,13 @@ jobs:
           java-version: 15
 
       - name: Publish to Bintray
-        run: ./scripts/release-publish-bintray.sh
-        env:
-          SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
+        run: ./gradlew bintrayUpload
 
       - name: Publish to GitHub
-        run: ./scripts/release-publish-github.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.REPOSITORY_PIPELINE_GITHUB_TOKEN }}
+        run: ./gradlew githubRelease
 
-      - name: Publish to Maven Central
-        run: ./scripts/release-publish-maven-central.sh
-        env:
-          SIGNING_KEY: ${{ secrets.GPG_SIGNING_KEY }}
-          SIGNING_PASSWORD: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
-          NEXUS_USERNAME: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          NEXUS_PASSWORD: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+      - name: Publish to Maven Central Staging
+        run: ./gradlew publishMavenJavaPublicationToSonatypeStagingRepository
+
+      - name: Publish to Maven Central Release
+        run: ./gradlew closeAndReleaseRepository
