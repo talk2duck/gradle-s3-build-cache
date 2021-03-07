@@ -161,19 +161,24 @@ publishing {
             pom {
                 name = project.name
                 description = 'Gradle build cache plugin that uses AWS S3 to store build artifacts'
-                url = 'https://www.talk2duck.com'
+                url = 'https://github.com/talk2duck/gradle-s3-build-cache'
+
                 licenses {
                     license {
                         name = 'The Apache License, Version 2.0'
                         url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
                     }
                 }
+
                 developers {
                     developer {
                         name = 'Talk2Duck'
                         email = 'support@talk2duck.com'
+                        organization = "Talk2Duck"
+                        organisationUrl = 'https://www.talk2duck.com'
                     }
                 }
+
                 scm {
                     connection = 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git'
                     developerConnection = 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git'
