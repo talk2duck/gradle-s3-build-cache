@@ -17,11 +17,12 @@ plugins {
     id 'maven-publish'
     id 'maven'
     id 'signing'
-    id "io.codearte.nexus-staging" version '0.30.0'
+    id "io.codearte.nexus-staging" version "$nexusStagingPluginVersion"
     id 'java-gradle-plugin'
-    id 'com.github.johnrengelman.shadow' version "$shadowjarVersion"
+    id 'com.github.johnrengelman.shadow' version "$shadowjarPluginVersion"
     id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
-    id 'com.jfrog.bintray' version "1.8.4"
+    id 'com.jfrog.bintray' version "$bintrayPluginVersion"
+    id 'com.github.breadmoirai.github-release' version "$githubReleasePluginVersion"
 }
 
 group 'com.talk2duck'
@@ -219,4 +220,16 @@ bintray {
     }
 }
 
-
+githubRelease {
+    token = System.getenv('GITHUB_TOKEN').toString()
+    owner = 'talk2duck'
+    repo = project.name
+    tagName = project.version
+    targetCommitish 'main'
+    releaseName project.version
+    body "Released ${project.name} version ${project.version}"
+    draft false
+    prerelease false
+    overwrite false
+    dryRun false
+}

@@ -1,9 +1,13 @@
 ext {
     kotlinVersion = "1.4.30"
     gradlePublishPluginVersion = "0.13.0"
+    shadowjarPluginVersion = "6.1.0"
+    bintrayPluginVersion = "1.8.4"
+    nexusStagingPluginVersion = "0.30.0"
+    githubReleasePluginVersion = "2.2.12"
+
     junitVersion = "5.7.0"
     hamkrestVersion = "1.8.0.1"
-    shadowjarVersion = "6.1.0"
     awsVersion = "1.11.872"
     testContainersVersion = "1.15.2"
 
@@ -13,10 +17,6 @@ ext {
 
     kotlinGradle = [
             "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
-    ]
-
-    shadowjar = [
-            "com.github.jengelman.gradle.plugins:shadow:$shadowjarVersion"
     ]
 
     awsS3 = [
