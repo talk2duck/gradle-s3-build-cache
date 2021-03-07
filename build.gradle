@@ -170,11 +170,6 @@ publishing {
                     }
                 }
 
-                organisation {
-                    name = 'Talk2Duck'
-                    url = 'https://www.talk2duck.com'
-                }
-
                 developers {
                     developer {
                         name = 'Talk2Duck'
@@ -235,9 +230,9 @@ githubRelease {
     tagName = project.version
     targetCommitish 'main'
     releaseName project.version
-    body "Released ${project.name} version ${project.version}"
+    body = { "./scripts/release-notes.sh ${project.version}".execute().text.trim() }
     draft false
     prerelease false
     overwrite false
-    dryRun false
+    dryRun true
 }
