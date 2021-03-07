@@ -7,7 +7,7 @@ buildscript {
     repositories {
         mavenCentral()
         maven {
-            url "https://plugins.gradle.org/m2/"
+            url 'https://plugins.gradle.org/m2/'
         }
     }
 }
@@ -33,14 +33,14 @@ targetCompatibility = JavaVersion.VERSION_1_8
 
 compileKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '1.8'
         allWarningsAsErrors = true
     }
 }
 
 compileTestKotlin {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = '1.8'
         allWarningsAsErrors = true
     }
 }
@@ -62,7 +62,7 @@ configurations.compile.dependencies.remove dependencies.gradleApi()
 
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
-    prefix = "com.talk2duck.gradle.buildcache.shadow"
+    prefix = 'com.talk2duck.gradle.buildcache.shadow'
 }
 
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
@@ -122,14 +122,14 @@ artifacts {
 
 signing {
     def signingKey = System.getenv('SIGNING_KEY')
-    def signingPassword = System.getenv("SIGNING_PASSWORD")
+    def signingPassword = System.getenv('SIGNING_PASSWORD')
 
     useInMemoryPgpKeys(signingKey, signingPassword)
     sign publishing.publications
 }
 
-def nexusUsername = System.getenv('NEXUS_USERNAME') ?: "notset"
-def nexusPassword = System.getenv('NEXUS_PASSWORD') ?: "notset"
+def nexusUsername = System.getenv('NEXUS_USERNAME') ?: 'notset'
+def nexusPassword = System.getenv('NEXUS_PASSWORD') ?: 'notset'
 
 publishing {
     repositories {
@@ -170,12 +170,15 @@ publishing {
                     }
                 }
 
+                organisation {
+                    name = 'Talk2Duck'
+                    url = 'https://www.talk2duck.com'
+                }
+
                 developers {
                     developer {
                         name = 'Talk2Duck'
                         email = 'support@talk2duck.com'
-                        organization = "Talk2Duck"
-                        organisationUrl = 'https://www.talk2duck.com'
                     }
                 }
 
