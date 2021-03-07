@@ -2,8 +2,6 @@ on:
   push:
     tags:
       - '*'
-env:
-  ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 jobs:
   release_publish:
     runs-on: ubuntu-latest
