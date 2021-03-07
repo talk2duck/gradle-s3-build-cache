@@ -100,11 +100,11 @@ The AWS credential must have at least the following permissions to the bucket:
 The Gradle build cache is an incubating feature and needs to be enabled per build (`--build-cache`) or in the Gradle properties (`org.gradle.caching=true`).
 See [the official doc](https://docs.gradle.org/current/userguide/build_cache.html#sec:build_cache_enable) for details.
 
-# Versioning
+## Versioning
 
 This project uses explicit versioning *Release.Breaking.Feature.Fix* as described [here](https://medium.com/sapioit/why-having-3-numbers-in-the-version-name-is-bad-92fc1f6bc73c).
 
 
-# License
+## License
 
 [Apache License 2.0](./LICENSE)
