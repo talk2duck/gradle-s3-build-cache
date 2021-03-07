@@ -234,5 +234,5 @@ githubRelease {
     draft false
     prerelease false
     overwrite false
-    dryRun true
+    dryRun false
 }
