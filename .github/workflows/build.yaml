@@ -39,7 +39,7 @@ jobs:
           java-version: 15
 
       - name: Build
-        run: ./scripts/build.sh
+        run: ./gradlew build
 
       - name: Release (if required)
         run: |
