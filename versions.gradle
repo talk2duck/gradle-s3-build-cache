@@ -1,8 +1,7 @@
 ext {
-    kotlinVersion = "1.4.30"
+    kotlinVersion = "1.6.0"
     gradlePublishPluginVersion = "0.13.0"
     shadowjarPluginVersion = "6.1.0"
-    bintrayPluginVersion = "1.8.4"
     nexusStagingPluginVersion = "0.30.0"
     githubReleasePluginVersion = "2.2.12"
 

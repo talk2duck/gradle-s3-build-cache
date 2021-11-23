@@ -15,13 +15,11 @@ buildscript {
 plugins {
     id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
     id 'maven-publish'
-    id 'maven'
     id 'signing'
     id "io.codearte.nexus-staging" version "$nexusStagingPluginVersion"
     id 'java-gradle-plugin'
     id 'com.github.johnrengelman.shadow' version "$shadowjarPluginVersion"
     id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
-    id 'com.jfrog.bintray' version "$bintrayPluginVersion"
     id 'com.github.breadmoirai.github-release' version "$githubReleasePluginVersion"
 }
 
@@ -58,8 +56,6 @@ dependencies {
     testImplementation testing
 }
 
-configurations.compile.dependencies.remove dependencies.gradleApi()
-
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
     prefix = 'com.talk2duck.gradle.buildcache.shadow'
@@ -68,7 +64,6 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
 shadowJar {
-    configurations = [project.configurations.compileOnly]
     archiveClassifier.set('')
     mergeServiceFiles()
     exclude 'META-INF/versions/'
@@ -194,33 +189,6 @@ nexusStaging {
     serverUrl = 'https://s01.oss.sonatype.org/service/local'
     username = nexusUsername
     password = nexusPassword
-}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-    publications = ['mavenJava']
-    dryRun = false
-    publish = true
-    pkg {
-        repo = 'maven'
-        userOrg = 'talk2duck'
-        name = project.name
-        desc = description
-        websiteUrl = 'https://github.com/talk2duck/gradle-s3-build-cache'
-        issueTrackerUrl = 'https://github.com/talk2duck/gradle-s3-build-cache/issues'
-        vcsUrl = 'https://github.com/talk2duck/gradle-s3-build-cache.git'
-        licenses = ['Apache-2.0']
-        labels = []
-        publicDownloadNumbers = true
-        version {
-            name = project.version
-            vcsTag = project.version
-            gpg {
-                sign = true
-            }
-        }
-    }
 }
 
 githubRelease {
