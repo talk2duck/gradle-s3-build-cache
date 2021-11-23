@@ -19,6 +19,7 @@ if [ "$NEW_VERSION" == "" ]; then
 fi
 
 git stash
+git pull
 
 LATEST_VERSION=$(git describe --tags --abbrev=0)
 
