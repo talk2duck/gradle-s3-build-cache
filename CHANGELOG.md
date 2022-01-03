@@ -2,6 +2,10 @@
 
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
 
+### v1.2.0.0
+- Upgrade dependencies
+- Fixed packaging
+
 ### v1.1.0.0
 - Upgrade dependencies
 

@@ -47,14 +47,22 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    packageShadowJar
+}
+
 dependencies {
-    shadow localGroovy()
-    shadow gradleApi()
-    compileOnly awsS3
+    packageShadowJar awsS3
+
+    implementation localGroovy()
+    implementation gradleApi()
+    implementation awsS3
 
     testImplementation awsS3
     testImplementation testing
 }
+
+configurations.packageShadowJar.dependencies.remove dependencies.gradleApi()
 
 task relocateShadowJar(type: ConfigureShadowRelocation) {
     target = tasks.shadowJar
@@ -64,6 +72,7 @@ task relocateShadowJar(type: ConfigureShadowRelocation) {
 tasks.shadowJar.dependsOn tasks.relocateShadowJar
 
 shadowJar {
+    configurations = [project.configurations.packageShadowJar]
     archiveClassifier.set('')
     mergeServiceFiles()
     exclude 'META-INF/versions/'
