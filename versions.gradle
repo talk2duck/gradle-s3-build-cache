@@ -1,13 +1,13 @@
 ext {
-    kotlinVersion = "1.7.10"
+    kotlinVersion = "1.8.10"
     gradlePublishPluginVersion = "1.1.0"
-    shadowjarPluginVersion = "7.1.2"
+    shadowjarPluginVersion = "8.1.0"
     nexusStagingPluginVersion = "0.30.0"
     githubReleasePluginVersion = "2.4.1"
 
-    junitVersion = '5.9.1'
+    junitVersion = '5.9.2'
     hamkrestVersion = "1.8.0.1"
-    awsVersion = '1.12.341'
+    awsVersion = '1.12.419'
 
     kotlin = [
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlinVersion"
