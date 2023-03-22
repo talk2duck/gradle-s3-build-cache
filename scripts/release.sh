@@ -26,8 +26,8 @@ LATEST_VERSION=$(git describe --tags --abbrev=0)
 echo "Current version is $LATEST_VERSION"
 echo "New version is $NEW_VERSION"
 
-sed -i -- s/"$LATEST_VERSION"/"$NEW_VERSION"/g "README.md"
-sed -i -- s/"$LATEST_VERSION"/"$NEW_VERSION"/g "version.json"
+sed -i '' s/"$LATEST_VERSION"/"$NEW_VERSION"/g "README.md"
+sed -i '' s/"$LATEST_VERSION"/"$NEW_VERSION"/g "version.json"
 
 git add "README.md"
 git add "version.json"
