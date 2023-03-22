@@ -2,6 +2,9 @@
 
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
 
+### v1.6.0.1
+- Switch to java 11
+
 ### v1.6.0.0
 - Fix packaging
 - Added scripts to publish remotely 
