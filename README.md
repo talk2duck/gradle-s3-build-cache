@@ -12,8 +12,6 @@ in AWS S3 bucket.
 
 ## Usage
 
-*NOTE: Project is in early stages so use at your own risk.*
-
 ### Apply plugin
 
 settings.gradle
