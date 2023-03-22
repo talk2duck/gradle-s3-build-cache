@@ -3,7 +3,7 @@
 [![Build](https://github.com/talk2duck/gradle-s3-build-cache/actions/workflows/build.yaml/badge.svg)](https://github.com/talk2duck/gradle-s3-build-cache/actions/workflows/build.yaml)
 <a href="https://repo.maven.apache.org/maven2/com/talk2duck/gradle-s3-build-cache/"><img alt="download" src="https://img.shields.io/maven-central/v/com.talk2duck/gradle-s3-build-cache"></a>
 <a href="LICENSE"><img alt="GitHub license" src="https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat"></a>
-<a href="http://kotlinlang.org"><img alt="kotlin version" src="https://img.shields.io/badge/kotlin-1.4-blue.svg"></a>
+<a href="http://kotlinlang.org"><img alt="kotlin version" src="https://img.shields.io/badge/kotlin-1.8-blue.svg"></a>
 <a href="https://codebeat.co/projects/github-com-talk2duck-gradle-s3-build-cache-main"><img alt="codebeat badge" src="https://codebeat.co/badges/6cf2556d-0523-4d92-9878-bdbecc3b6bc4" /></a>
 
 Makes use of the [Gradle build cache](https://docs.gradle.org/current/userguide/build_cache.html) and stores build artifacts 
