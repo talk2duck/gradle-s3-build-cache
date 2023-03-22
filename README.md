@@ -24,7 +24,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath "com.talk2duck:gradle-s3-build-cache:1.4.0.0"
+    classpath "com.talk2duck:gradle-s3-build-cache:1.5.0.0"
   }
 }
 
