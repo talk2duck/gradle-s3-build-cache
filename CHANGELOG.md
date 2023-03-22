@@ -3,7 +3,6 @@
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
 
 ### v1.5.0.0 (uncut)
-- Converted to kotlin DSL
 - Upgraded dependencies 
 - Fixed shadow jarring of dependencies
 

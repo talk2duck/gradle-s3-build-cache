@@ -203,10 +203,10 @@ githubRelease {
     token = System.getenv('GITHUB_TOKEN').toString()
     owner = 'talk2duck'
     repo = project.name
-    tagName = project.version
+    tagName = project.version.toString()
     targetCommitish 'main'
-    releaseName project.version
-    body = { "./scripts/release-notes.sh ${project.version}".execute().text.trim() }
+    releaseName = project.version.toString()
+    body.set(provider { "./scripts/release-notes.sh ${project.version}".execute().text.trim() })
     draft false
     prerelease false
     overwrite false
