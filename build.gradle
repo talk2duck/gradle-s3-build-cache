@@ -1,25 +1,31 @@
 import groovy.json.JsonSlurper
 
 buildscript {
-    apply from: rootProject.file('versions.gradle')
-
     repositories {
         mavenCentral()
         maven {
             url 'https://plugins.gradle.org/m2/'
         }
     }
+
+    dependencies {
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
+        classpath("org.openapitools:openapi-generator-gradle-plugin:_")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:_")
+        classpath("com.github.johnrengelman:shadow:_")
+        classpath("io.codearte.nexus-staging:io.codearte.nexus-staging.gradle.plugin:_")
+    }
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version "$kotlinVersion"
+    id 'org.jetbrains.kotlin.jvm'
     id 'maven-publish'
     id 'signing'
-    id "io.codearte.nexus-staging" version "$nexusStagingPluginVersion"
+    id "io.codearte.nexus-staging"
     id 'java-gradle-plugin'
-    id 'com.github.johnrengelman.shadow' version "$shadowjarPluginVersion"
-    id 'com.gradle.plugin-publish' version "$gradlePublishPluginVersion"
-    id 'com.github.breadmoirai.github-release' version "$githubReleasePluginVersion"
+    id 'com.github.johnrengelman.shadow'
+    id 'com.gradle.plugin-publish'
+    id 'com.github.breadmoirai.github-release'
 }
 
 group 'com.talk2duck'
@@ -51,28 +57,26 @@ configurations {
 }
 
 dependencies {
-    packageShadowJar awsS3
+    packageShadowJar "com.amazonaws:aws-java-sdk-s3:_"
 
     implementation localGroovy()
     implementation gradleApi()
-    implementation awsS3
+    implementation "com.amazonaws:aws-java-sdk-s3:_"
 
-    testImplementation awsS3
-    testImplementation testing
+    testImplementation Testing.junit.jupiter.api
+    testImplementation Testing.junit.jupiter.engine
+    testImplementation Testing.junit.jupiter.params
+    testImplementation "com.natpryce:hamkrest:_"
+    testImplementation "io.findify:s3mock_2.12:_"
 }
 
 configurations.packageShadowJar.dependencies.remove dependencies.gradleApi()
 
-//task relocateShadowJar(type: ConfigureShadowRelocation) {
-//    target = tasks.shadowJar
-//    prefix = 'com.talk2duck.gradle.buildcache.shadow'
-//}
-//
-//tasks.shadowJar.dependsOn tasks.relocateShadowJar
-
 shadowJar {
     configurations = [project.configurations.packageShadowJar]
     archiveClassifier.set('')
+    enableRelocation true
+    relocationPrefix "com.talk2duck.gradle.buildcache.shadow"
     mergeServiceFiles()
     exclude 'META-INF/versions/'
     exclude 'META-INF/maven/'
