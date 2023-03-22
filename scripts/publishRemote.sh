@@ -11,4 +11,6 @@ printProjectInfo
 
 cd "$PROJECT_ROOT_DIR" || exit 1
 
-./gradlew clean shadowJar publishPluginMavenPublicationToMavenLocal
+./gradlew clean shadowJar publishMavenJavaPublicationToSonatypeStagingRepository
+./gradlew closeAndReleaseRepository
+

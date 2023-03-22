@@ -2,8 +2,9 @@
 
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
 
-### v1.5.0.1
-- Different pom generation
+### v1.5.0.2
+- Fix packaging
+- Added scripts to publish remotely 
  
 ### v1.5.0.0
 - Upgraded dependencies 

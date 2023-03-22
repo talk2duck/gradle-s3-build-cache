@@ -52,15 +52,10 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    packageShadowJar
-}
-
 dependencies {
-    packageShadowJar "com.amazonaws:aws-java-sdk-s3:_"
+    shadow localGroovy()
+    shadow gradleApi()
 
-    implementation localGroovy()
-    implementation gradleApi()
     implementation "com.amazonaws:aws-java-sdk-s3:_"
 
     testImplementation Testing.junit.jupiter.api
@@ -70,10 +65,7 @@ dependencies {
     testImplementation "io.findify:s3mock_2.12:_"
 }
 
-configurations.packageShadowJar.dependencies.remove dependencies.gradleApi()
-
 shadowJar {
-    configurations = [project.configurations.packageShadowJar]
     archiveClassifier.set('')
     enableRelocation true
     relocationPrefix "com.talk2duck.gradle.buildcache.shadow"
@@ -159,24 +151,34 @@ publishing {
         mavenJava(MavenPublication) { publication ->
             artifactId = project.name
 
-            project.shadow.component(publication)
+            pom {
+                name = project.name
+                description = 'Gradle build cache plugin that uses AWS S3 to store build artifacts'
+                url = 'https://github.com/talk2duck/gradle-s3-build-cache'
 
-            pom.withXml {
-                asNode().appendNode("name", project.name)
-                asNode().appendNode("description", 'Gradle build cache plugin that uses AWS S3 to store build artifacts')
-                asNode().appendNode("url", 'https://github.com/talk2duck/gradle-s3-build-cache')
-                asNode().appendNode("developers")
-                        .appendNode("developer").appendNode("name", "Talk2Duck").parent().appendNode("email", "support@talk2duck.com")
-                        .parent().parent()
-                asNode().appendNode("scm").
-                        appendNode("url", "git@github.com:talk2duck/gradle-s3-build-cache.git").parent().
-                        appendNode("connection", "scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git").parent().
-                        appendNode("developerConnection", "scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git")
-                asNode().appendNode("licenses").appendNode("license").
-                        appendNode("name", "Apache License, Version 2.0").parent().
-                        appendNode("url", "http://www.apache.org/licenses/LICENSE-2.0.html")
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+
+                developers {
+                    developer {
+                        name = 'Talk2Duck'
+                        email = 'support@talk2duck.com'
+                    }
+                }
+
+                scm {
+                    connection = 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git'
+                    developerConnection = 'scm:git:git@github.com:talk2duck/gradle-s3-build-cache.git'
+                    url = 'git@github.com:talk2duck/gradle-s3-build-cache.git'
+                }
             }
 
+
+            artifact shadowJar
             artifact sourcesJar
             artifact javadocJar
         }
