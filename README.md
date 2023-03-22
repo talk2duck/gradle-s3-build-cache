@@ -44,22 +44,22 @@ buildCache {
 
 ### Configuration
 
-| Configuration Key        | Type    | Description                                                                                                | Mandatory | Default Value |
-| ------------------------ | ------- | ---------------------------------------------------------------------------------------------------------- | --------- | ------------- |
-| awsAccessKeyId           | String  | The AWS access key id                                                                                      |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
-| awsSecretKey             | String  | The AWS secret access key                                                                                  |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
-| awsProfile               | String  | The AWS profile to source credentials from                                                                 |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
-| sessionToken             | String  | The AWS sessionToken                                                                                       |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) |
-| region                   | String  | The AWS region                                                                                             | yes       |               |
-| bucket                   | String  | The name of the AWS S3 bucket where cache objects should be stored.                                        | yes       |               |
-| prefix                   | String  | The prefix of the AWS S3 object key in the bucket                                                          |           | `cache/`      |
-| endpoint                 | String  | The S3 endpoint                                                                                            |           |               |
-| reducedRedundancyStorage | boolean | Whether to use [Reduced Redundancy Storage](https://aws.amazon.com/s3/reduced-redundancy/?nc1=h_ls) or not |           | `true`        |
+| Configuration Key        | Type    | Description                                                                                                | Mandatory | Default Value                                                                                                                                       |
+| ------------------------ | ------- | ---------------------------------------------------------------------------------------------------------- | --------- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
+| awsAccessKeyId           | String  | The AWS access key id                                                                                      |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials.html#credentials-default) |
+| awsSecretKey             | String  | The AWS secret access key                                                                                  |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials.html#credentials-default) |
+| awsProfile               | String  | The AWS profile to source credentials from                                                                 |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials.html#credentials-default) |
+| sessionToken             | String  | The AWS sessionToken                                                                                       |           | [Using the Default Credential Provider Chain](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials.html#credentials-default) |
+| region                   | String  | The AWS region                                                                                             | yes       |                                                                                                                                                     |
+| bucket                   | String  | The name of the AWS S3 bucket where cache objects should be stored.                                        | yes       |                                                                                                                                                     |
+| prefix                   | String  | The prefix of the AWS S3 object key in the bucket                                                          |           | `cache/`                                                                                                                                            |
+| endpoint                 | String  | The S3 endpoint                                                                                            |           |                                                                                                                                                     |
+| reducedRedundancyStorage | boolean | Whether to use [Reduced Redundancy Storage](https://aws.amazon.com/s3/reduced-redundancy/?nc1=h_ls) or not |           | `true`                                                                                                                                              |
 
 ### AWS credentials
 
 By default, this plugin uses `Default Credential Provider Chain` to lookup the AWS credentials.  
-See [Using the Default Credential Provider Chain - AWS SDK for Java](https://docs.aws.amazon.com/sdk-for-java/v1/developer-guide/credentials.html#credentials-default) for more details.
+See [Using the Default Credential Provider Chain - AWS SDK for Java](https://docs.aws.amazon.com/sdk-for-java/latest/developer-guide/credentials.html#credentials-default) for more details.
 
 
 You can also select which `profile` to use for AWS authentication by specifying `awsProfile`.  
