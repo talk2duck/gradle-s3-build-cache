@@ -2,6 +2,11 @@
 
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
 
+### v1.5.0.0 (uncut)
+- Converted to kotlin DSL
+- Upgraded dependencies 
+- Fixed shadow jarring of dependencies
+
 ### v1.4.0.0
 - Upgrade dependencies (Kotlin 1.8.10, Gradle 8.0.2) 
 
