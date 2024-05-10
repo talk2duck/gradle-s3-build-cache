@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 buildscript {
     repositories {
         mavenCentral()
@@ -81,6 +83,19 @@ tasks {
         archiveClassifier.set("javadoc")
         from(named<Javadoc>("javadoc").get().destinationDir)
         dependsOn(named("javadoc"))
+    }
+
+    withType<KotlinCompile> {
+        kotlinOptions {
+            jvmTarget = "11"
+            allWarningsAsErrors = true
+            compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
+            compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.contracts.ExperimentalContracts")
+        }
+    }
+
+    withType<JavaCompile> {
+        targetCompatibility = "11"
     }
 
     shadowJar {
@@ -190,15 +205,15 @@ tasks {
 
     githubRelease {
         setToken { githubToken }
-        setOwner { "talk2duck" }
-        setRepo { project.name }
-        setTagName { project.version.toString() }
-        setTargetCommitish { "main" }
-        setReleaseName { project.version.toString() }
-        setBody { githubReleaseNotes }
-        setDraft { false }
-        setPrerelease { false }
-        setOverwrite { false }
-        setDryRun { false }
+        owner.set("talk2duck")
+        repo.set(project.name)
+        tagName.set(project.version.toString())
+        targetCommitish.set("main")
+        releaseName.set(project.version.toString())
+        body.set(githubReleaseNotes)
+        draft.set(false)
+        prerelease.set(false)
+        overwrite.set(false)
+        dryRun.set(false)
     }
 }
