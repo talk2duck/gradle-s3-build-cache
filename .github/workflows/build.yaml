@@ -45,9 +45,6 @@ jobs:
 
       - name: Release (if required)
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git remote set-url origin https://x-access-token:${{ secrets.REPOSITORY_PIPELINE_GITHUB_TOKEN }}@github.com/${GITHUB_REPOSITORY}.git
           ./scripts/release-tag.sh
         if: github.ref == 'refs/heads/main'
         env:
