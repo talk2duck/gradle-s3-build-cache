@@ -12,7 +12,7 @@ buildscript {
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("org.openapitools:openapi-generator-gradle-plugin:6.4.0")
         classpath("com.github.johnrengelman:shadow:8.1.1")
-        classpath("com.gradle.publish:plugin-publish-plugin:1.1.0")
+        classpath("com.gradle.publish:plugin-publish-plugin:1.3.0")
         classpath("com.github.breadmoirai:github-release:2.4.1")
     }
 }
