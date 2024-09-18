@@ -7,8 +7,8 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:1.9.22")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.20")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:2.0.20")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("org.openapitools:openapi-generator-gradle-plugin:6.4.0")
         classpath("com.github.johnrengelman:shadow:8.1.1")
@@ -18,7 +18,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.0.20"
     id("maven-publish")
     id("signing")
     id("io.codearte.nexus-staging") version "0.30.0"

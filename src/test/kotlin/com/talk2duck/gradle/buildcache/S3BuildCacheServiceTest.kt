@@ -48,8 +48,9 @@ class S3BuildCacheServiceTest {
 
     private fun readCacheDataFromS3(cacheKey: TestBuildCacheKey) = String(amazonS3.getObject(bucketName, prefix + cacheKey.hashCode).objectContent.readAllBytes())
 
-    @Suppress("UnstableApiUsage")
+
     data class TestBuildCacheKey(private val data: String) : BuildCacheKey {
+        @Deprecated("Deprecated")
         override fun getDisplayName() = "${javaClass.name}:${hashCode}"
         override fun getHashCode() = nameUUIDFromBytes(toByteArray()).toString()
         override fun toByteArray() = data.toByteArray()
