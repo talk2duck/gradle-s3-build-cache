@@ -3,10 +3,8 @@
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
  
 ### v1.7.0.1
-- Fixing release process
- 
-### v1.7.0.0
 - Upgrade dependencies (Kotlin 2.0.20, Java 21, Gradle 8.8)
+- Fixing release process
 
 ### v1.6.0.1
 - Switch to java 11
