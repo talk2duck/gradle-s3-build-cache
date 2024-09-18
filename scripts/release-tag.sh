@@ -19,3 +19,4 @@ fi
 
 git tag -a "$PROJECT_VERSION" -m "${PROJECT_ID} version $PROJECT_VERSION"
 git push origin "$PROJECT_VERSION"
+git push origin tag "$PROJECT_VERSION"
