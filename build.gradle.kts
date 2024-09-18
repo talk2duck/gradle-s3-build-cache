@@ -1,4 +1,6 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.gradle.api.JavaVersion.VERSION_21
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 buildscript {
     repositories {
@@ -11,7 +13,6 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-serialization:2.0.20")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("org.openapitools:openapi-generator-gradle-plugin:6.4.0")
-        classpath("com.github.johnrengelman:shadow:8.1.1")
         classpath("com.gradle.publish:plugin-publish-plugin:1.3.0")
         classpath("com.github.breadmoirai:github-release:2.5.2")
     }
@@ -23,7 +24,7 @@ plugins {
     id("signing")
     id("io.codearte.nexus-staging") version "0.30.0"
     id("java-gradle-plugin")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "8.3.2"
     id("com.gradle.plugin-publish") version "1.3.0"
     id("com.github.breadmoirai.github-release") version "2.5.2"
 }
@@ -88,17 +89,22 @@ tasks {
         dependsOn(named("javadoc"))
     }
 
-    withType<KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "11"
-            allWarningsAsErrors = true
-            compilerOptions.freeCompilerArgs.add("-Xcontext-receivers")
-            compilerOptions.freeCompilerArgs.add("-opt-in=kotlin.contracts.ExperimentalContracts")
+    kotlin {
+        jvmToolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
         }
     }
 
-    withType<JavaCompile> {
-        targetCompatibility = "11"
+    java {
+        sourceCompatibility = VERSION_21
+        targetCompatibility = VERSION_21
+    }
+
+    withType<KotlinJvmCompile> {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_21
+            allWarningsAsErrors = true
+        }
     }
 
     shadowJar {
