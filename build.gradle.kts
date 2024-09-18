@@ -7,23 +7,25 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:_")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:_")
-        classpath("io.codearte.nexus-staging:io.codearte.nexus-staging.gradle.plugin:_")
-        classpath("org.openapitools:openapi-generator-gradle-plugin:_")
-        classpath("com.github.johnrengelman:shadow:_")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:1.9.22")
+        classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
+        classpath("org.openapitools:openapi-generator-gradle-plugin:6.4.0")
+        classpath("com.github.johnrengelman:shadow:8.1.1")
+        classpath("com.gradle.publish:plugin-publish-plugin:1.1.0")
+        classpath("com.github.breadmoirai:github-release:2.4.1")
     }
 }
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    kotlin("jvm") version "1.9.22"
     id("maven-publish")
     id("signing")
-    id("io.codearte.nexus-staging")
+    id("io.codearte.nexus-staging") version "0.30.0"
     id("java-gradle-plugin")
-    id("com.github.johnrengelman.shadow")
-    id("com.gradle.plugin-publish")
-    id("com.github.breadmoirai.github-release")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradle.plugin-publish") version "1.1.0"
+    id("com.github.breadmoirai.github-release") version "2.4.1"
 }
 
 fun String.exec(workingDir: File = projectDir) = try {
@@ -52,13 +54,14 @@ dependencies {
     shadow(localGroovy())
     shadow(gradleApi())
 
-    implementation("com.amazonaws:aws-java-sdk-s3:_")
+    implementation("com.amazonaws:aws-java-sdk-s3:1.12.772")
 
-    testImplementation(Testing.junit.jupiter.api)
-    testImplementation(Testing.junit.jupiter.engine)
-    testImplementation(Testing.junit.jupiter.params)
-    testImplementation("com.natpryce:hamkrest:_")
-    testImplementation("io.findify:s3mock_2.12:_")
+    testImplementation(platform("org.junit:junit-bom:5.11.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter-api")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.junit.jupiter:junit-jupiter-params")
+    testImplementation("com.natpryce:hamkrest:1.8.0.1")
+    testImplementation("io.findify:s3mock_2.12:0.2.6")
 }
 
 tasks {
