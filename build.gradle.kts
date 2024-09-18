@@ -13,7 +13,7 @@ buildscript {
         classpath("org.openapitools:openapi-generator-gradle-plugin:6.4.0")
         classpath("com.github.johnrengelman:shadow:8.1.1")
         classpath("com.gradle.publish:plugin-publish-plugin:1.1.0")
-        classpath("com.github.breadmoirai:github-release:2.4.1")
+        classpath("com.github.breadmoirai:github-release:2.5.2")
     }
 }
 
@@ -25,7 +25,7 @@ plugins {
     id("java-gradle-plugin")
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("com.gradle.plugin-publish") version "1.1.0"
-    id("com.github.breadmoirai.github-release") version "2.4.1"
+    id("com.github.breadmoirai.github-release") version "2.5.2"
 }
 
 fun String.exec(workingDir: File = projectDir) = try {
