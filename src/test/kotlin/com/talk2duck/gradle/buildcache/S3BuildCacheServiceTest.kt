@@ -3,12 +3,22 @@ package com.talk2duck.gradle.buildcache
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import com.talk2duck.gradle.buildcache.S3BuildCacheServiceFactory.Companion.createAmazonS3Client
-import io.findify.s3mock.S3Mock
 import org.gradle.caching.BuildCacheEntryWriter
 import org.gradle.caching.BuildCacheKey
+import org.http4k.connect.amazon.core.model.Region
+import org.http4k.connect.amazon.s3.FakeS3
+import org.http4k.connect.amazon.s3.createBucket
+import org.http4k.connect.amazon.s3.model.BucketName
+import org.http4k.core.then
+import org.http4k.filter.DebuggingFilters
+import org.http4k.filter.DebuggingFilters.PrintRequestAndResponse
+import org.http4k.server.Http4kServer
+import org.http4k.server.SunHttp
+import org.http4k.server.asServer
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import java.io.OutputStream
 import java.util.UUID.nameUUIDFromBytes
 
@@ -37,17 +47,19 @@ class S3BuildCacheServiceTest {
 
     private val bucketName = "some-build-cache"
     private val prefix = "cache/"
+    private val awsRegion = Region.AP_EAST_1
     private val amazonS3 = createAmazonS3Client(S3BuildCache().apply {
         awsAccessKeyId = "someKey"
         awsSecretKey = "someSecret"
+        region = awsRegion.value
         endpoint = localS3Url
     }).apply {
-        createBucket(bucketName)
+        fakeS3.s3Client().createBucket(BucketName.of(bucketName), awsRegion)
     }
+
     private val cacheService = S3BuildCacheService(amazonS3, bucketName, prefix, true)
 
-    private fun readCacheDataFromS3(cacheKey: TestBuildCacheKey) = String(amazonS3.getObject(bucketName, prefix + cacheKey.hashCode).objectContent.readAllBytes())
-
+    private fun readCacheDataFromS3(cacheKey: TestBuildCacheKey) = String(amazonS3.getObject(GetObjectRequest.builder().bucket(bucketName).key(prefix + cacheKey.hashCode).build()).readAllBytes())
 
     data class TestBuildCacheKey(private val data: String) : BuildCacheKey {
         @Deprecated("Deprecated")
@@ -62,19 +74,21 @@ class S3BuildCacheServiceTest {
     }
 
     companion object {
+        val fakeS3 = FakeS3()
         lateinit var localS3Url: String
-        private val localS3 = S3Mock.Builder().withPort(0).withInMemoryBackend().build()
+        lateinit var fakeS3Server: Http4kServer
 
         @BeforeAll
         @JvmStatic
         fun setupMockS3() {
-            localS3Url = localS3.start().localAddress().let { "http://localhost:${it.port}" }
+            fakeS3Server = fakeS3.asServer(SunHttp(0)).start()
+            localS3Url = fakeS3Server.let { "http://localhost:${it.port()}" }
         }
 
         @AfterAll
         @JvmStatic
         fun teardownMockS3() {
-            localS3.stop()
+            fakeS3Server.stop()
         }
     }
 }

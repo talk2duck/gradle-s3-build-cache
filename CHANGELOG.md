@@ -2,6 +2,9 @@
 
 This list is not intended to be all-encompassing - it will document major and breaking API changes with their rationale when appropriate:
  
+### v1.8.0.0
+- Upgraded to v2 of aws s3 client
+
 ### v1.7.0.1
 - Upgrade dependencies (Kotlin 2.0.20, Java 21, Gradle 8.8)
 - Fixing release process

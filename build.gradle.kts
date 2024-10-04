@@ -55,14 +55,16 @@ dependencies {
     shadow(localGroovy())
     shadow(gradleApi())
 
-    implementation("com.amazonaws:aws-java-sdk-s3:1.12.772")
+    implementation(platform("software.amazon.awssdk:bom:2.28.14"))
+    implementation("software.amazon.awssdk:s3")
 
     testImplementation(platform("org.junit:junit-bom:5.11.0"))
+    testImplementation(platform("org.http4k:http4k-connect-bom:5.24.1.0"))
+    testImplementation("org.http4k:http4k-connect-amazon-s3-fake")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.junit.jupiter:junit-jupiter-params")
     testImplementation("com.natpryce:hamkrest:1.8.0.1")
-    testImplementation("io.findify:s3mock_2.12:0.2.6")
 }
 
 tasks {
