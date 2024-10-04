@@ -59,7 +59,7 @@ dependencies {
     implementation("software.amazon.awssdk:s3")
 
     testImplementation(platform("org.junit:junit-bom:5.11.1"))
-    testImplementation(platform("org.http4k:http4k-connect-bom:5.24.1.0"))
+    testImplementation(platform("org.http4k:http4k-connect-bom:5.25.0.0"))
     testImplementation("org.http4k:http4k-connect-amazon-s3-fake")
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation("org.junit.jupiter:junit-jupiter-engine")
