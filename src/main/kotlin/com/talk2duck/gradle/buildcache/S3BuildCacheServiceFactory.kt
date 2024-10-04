@@ -71,29 +71,28 @@ open class S3BuildCacheServiceFactory : BuildCacheServiceFactory<S3BuildCache> {
                 credentials.add(DefaultCredentialsProvider.create())
             }
 
-            return S3Client.builder()
-                .apply {
-                    serviceConfiguration(
-                        S3Configuration.builder()
-                            .chunkedEncodingEnabled(false)
-                            .pathStyleAccessEnabled(false)
-                            .build()
-                    )
+            return S3Client.builder().apply {
+                serviceConfiguration(
+                    S3Configuration.builder()
+                        .chunkedEncodingEnabled(false)
+                        .pathStyleAccessEnabled(false)
+                        .build()
+                )
 
-                    credentialsProvider(
-                        AwsCredentialsProviderChain.builder()
-                            .credentialsProviders(credentials)
-                            .build()
-                    )
+                credentialsProvider(
+                    AwsCredentialsProviderChain.builder()
+                        .credentialsProviders(credentials)
+                        .build()
+                )
 
-                    if (configuration.region.isNotBlank()) {
-                        region(Region.of(configuration.region))
-                    }
+                if (configuration.region.isNotBlank()) {
+                    region(Region.of(configuration.region))
+                }
 
-                    if (configuration.endpoint.isNotBlank()) {
-                        endpointOverride(URI.create(configuration.endpoint))
-                    }
-                }.build()
+                if (configuration.endpoint.isNotBlank()) {
+                    endpointOverride(URI.create(configuration.endpoint))
+                }
+            }.build()
         }
     }
 }

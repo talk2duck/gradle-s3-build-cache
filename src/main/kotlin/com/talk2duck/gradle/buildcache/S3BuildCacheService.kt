@@ -5,12 +5,11 @@ import org.gradle.caching.BuildCacheEntryWriter
 import org.gradle.caching.BuildCacheException
 import org.gradle.caching.BuildCacheKey
 import org.gradle.caching.BuildCacheService
-import org.gradle.internal.impldep.com.amazonaws.AmazonServiceException
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
-import software.amazon.awssdk.services.s3.model.NoSuchBucketException
 import software.amazon.awssdk.services.s3.model.NoSuchKeyException
+import software.amazon.awssdk.services.s3.model.PutObjectRequest
 import software.amazon.awssdk.services.s3.model.StorageClass.REDUCED_REDUNDANCY
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
@@ -19,6 +18,7 @@ import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
 import java.io.InputStream
+import kotlin.math.log
 
 private const val TEN_MB = 10000000
 
@@ -43,9 +43,7 @@ open class S3BuildCacheService(
             }
         } catch (e: NoSuchKeyException) {
             return false
-        } catch (e: AmazonServiceException) {
-            throw BuildCacheException("Error while reading cache object from S3 bucket", e)
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             throw BuildCacheException("Error while reading cache object from S3 bucket", e)
         }
     }
@@ -79,37 +77,27 @@ open class S3BuildCacheService(
     }
 
     private fun putObject(key: String, inputStream: InputStream, size: Long) {
-        val request =
-            software.amazon.awssdk.services.s3.model.PutObjectRequest.builder()
-                .bucket(bucketName)
-                .key(key)
-                .contentType(BUILD_CACHE_CONTENT_TYPE)
-                .contentLength(size)
-                .let {
-                    when (reducedRedundancyStorage) {
-                        true -> it.storageClass(REDUCED_REDUNDANCY)
-                        false -> it
-                    }
-                }.build()
+        val request = PutObjectRequest.builder().apply {
+            bucket(bucketName)
+            key(key)
+            contentType(BUILD_CACHE_CONTENT_TYPE)
+            contentLength(size)
+            if (reducedRedundancyStorage) storageClass(REDUCED_REDUNDANCY)
+        }.build()
 
-        try {
-            s3Client.putObject(request, RequestBody.fromInputStream(inputStream, size))
-        } catch (e: NoSuchBucketException) {
-            e.cause?.printStackTrace()
-            e.printStackTrace()
-        }
+        val body = RequestBody.fromInputStream(inputStream, size)
+
+        s3Client.putObject(request, body)
     }
 
     private fun BuildCacheKey.asS3Key(): String {
         return when {
             prefix.isEmpty() -> hashCode
-            else -> {
-                StringBuilder().apply {
-                    append(prefix)
-                    if (!prefix.endsWith("/")) append("/")
-                    append(this@asS3Key.hashCode)
-                }.toString()
-            }
+            else -> StringBuilder().apply {
+                append(prefix)
+                if (!prefix.endsWith("/")) append("/")
+                append(this@asS3Key.hashCode)
+            }.toString()
         }
     }
 

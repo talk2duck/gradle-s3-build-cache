@@ -4,11 +4,18 @@ import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import com.talk2duck.gradle.buildcache.S3BuildCacheServiceFactory.Companion.createAmazonS3Client
 import org.gradle.caching.BuildCacheEntryWriter
+import org.gradle.caching.BuildCacheException
 import org.gradle.caching.BuildCacheKey
+import org.http4k.chaos.Behaviour
+import org.http4k.chaos.ChaosBehaviours
+import org.http4k.chaos.ChaosBehaviours.ReturnStatus
 import org.http4k.connect.amazon.core.model.Region
 import org.http4k.connect.amazon.s3.FakeS3
 import org.http4k.connect.amazon.s3.createBucket
 import org.http4k.connect.amazon.s3.model.BucketName
+import org.http4k.core.Status
+import org.http4k.core.Status.Companion.GATEWAY_TIMEOUT
+import org.http4k.core.Status.Companion.SERVICE_UNAVAILABLE
 import org.http4k.core.then
 import org.http4k.filter.DebuggingFilters
 import org.http4k.filter.DebuggingFilters.PrintRequestAndResponse
@@ -18,6 +25,7 @@ import org.http4k.server.asServer
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import software.amazon.awssdk.services.s3.model.GetObjectRequest
 import java.io.OutputStream
 import java.util.UUID.nameUUIDFromBytes
@@ -43,6 +51,15 @@ class S3BuildCacheServiceTest {
         val found = cacheService.load(TestBuildCacheKey("some invalid cache key")) { dataFromCache = it.readAllBytes() }
         assertThat(found, equalTo(false))
         assertThat(dataFromCache.size, equalTo(0))
+    }
+
+    @Test
+    fun `should blow up when having network problems`() {
+        fakeS3.misbehave(ReturnStatus(SERVICE_UNAVAILABLE))
+        assertThrows<BuildCacheException>("Error while reading cache object from S3 bucket") {
+            cacheService.load(TestBuildCacheKey("some invalid cache key")) { }
+        }
+        fakeS3.behave()
     }
 
     private val bucketName = "some-build-cache"

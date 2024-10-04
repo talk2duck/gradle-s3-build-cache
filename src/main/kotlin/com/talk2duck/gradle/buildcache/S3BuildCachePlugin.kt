@@ -3,6 +3,7 @@ package com.talk2duck.gradle.buildcache
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 
+@Suppress("Unused")
 class S3BuildCachePlugin : Plugin<Settings> {
     override fun apply(settings: Settings) = settings.applyS3BuildCachePlugin()
 }
