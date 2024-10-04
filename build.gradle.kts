@@ -1,5 +1,6 @@
 import org.gradle.api.JavaVersion.VERSION_21
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 buildscript {
@@ -103,7 +104,7 @@ tasks {
 
     withType<KotlinJvmCompile> {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_21
+            jvmTarget = JVM_21
             allWarningsAsErrors = true
         }
     }
