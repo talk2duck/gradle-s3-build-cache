@@ -92,8 +92,6 @@ open class S3BuildCacheService(
                     }
                 }.build()
 
-        println("request = ${request}")
-
         try {
             s3Client.putObject(request, RequestBody.fromInputStream(inputStream, size))
         } catch (e: NoSuchBucketException) {
