@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:2.0.20")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:2.0.21")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.gradle.publish:plugin-publish-plugin:1.3.0")
         classpath("com.github.breadmoirai:github-release:2.5.2")
@@ -19,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "2.0.20"
+    kotlin("jvm") version "2.0.21"
     id("maven-publish")
     id("signing")
     id("io.codearte.nexus-staging") version "0.30.0"
