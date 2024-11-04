@@ -24,7 +24,7 @@ plugins {
     id("signing")
     id("io.codearte.nexus-staging") version "0.30.0"
     id("java-gradle-plugin")
-    id("com.gradleup.shadow") version "8.3.4"
+    id("com.gradleup.shadow") version "8.3.5"
     id("com.gradle.plugin-publish") version "1.3.0"
     id("com.github.breadmoirai.github-release") version "2.5.2"
 }
