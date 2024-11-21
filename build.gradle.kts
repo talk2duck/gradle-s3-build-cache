@@ -55,7 +55,7 @@ dependencies {
     shadow(localGroovy())
     shadow(gradleApi())
 
-    implementation(platform("software.amazon.awssdk:bom:2.29.5"))
+    implementation(platform("software.amazon.awssdk:bom:2.29.18"))
     implementation("software.amazon.awssdk:s3")
 
     testImplementation(platform("org.junit:junit-bom:5.11.3"))
