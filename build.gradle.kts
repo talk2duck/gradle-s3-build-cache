@@ -11,7 +11,7 @@ buildscript {
 
     dependencies {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:2.0.21")
-        classpath("org.jetbrains.kotlin:kotlin-serialization:2.0.21")
+        classpath("org.jetbrains.kotlin:kotlin-serialization:2.1.0")
         classpath("io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.30.0")
         classpath("com.gradle.publish:plugin-publish-plugin:1.3.0")
         classpath("com.github.breadmoirai:github-release:2.5.2")
