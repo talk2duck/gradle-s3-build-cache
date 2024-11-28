@@ -19,7 +19,7 @@ buildscript {
 }
 
 plugins {
-    kotlin("jvm") version "2.0.21"
+    kotlin("jvm") version "2.1.0"
     id("maven-publish")
     id("signing")
     id("io.codearte.nexus-staging") version "0.30.0"
